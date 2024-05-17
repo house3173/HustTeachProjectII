@@ -4,7 +4,7 @@ import './App.css';
 function App() {
   return (
     <>
-      Hust Teach
+      Hust Teach build successfull
     </>
     // <AuthContextProvider>
     //   <PostContextProvider>
