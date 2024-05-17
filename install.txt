@@ -1,0 +1,9 @@
+server 
+--> npm install express jsonwebtoken mongoose dotenv argon2 cors
+--> npm install --save-dev nodemon
+--> package.json --> script --> "start": "nodemon index"
+
+client
+--> npm create-react-app client
+--> cd client --> npm install react-bootstrap bootstrap axios react-router-dom
+--> trong index.js để sử dụng react-bootstrap thì --> import 'bootstrap/dist/css/bootstrap.min.css';
