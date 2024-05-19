@@ -1,3 +1,51 @@
+.mt-30 {
+  margin-top: 30px;
+}
+.mt-20 {
+  margin-top: 20px;
+}
+.mt-40 {
+  margin-top: 40px;
+}
+.mt-10 {
+  margin-top: 10px;
+}
+.mb-30 {
+  margin-bottom: 30px;
+}
+.mb-20 {
+  margin-bottom: 20px;
+}
+.mb-40 {
+  margin-bottom: 40px;
+}
+.mb-10 {
+  margin-bottom: 10px;
+}
+.mr-30 {
+  margin-right: 30px;
+}
+.mr-20 {
+  margin-right: 20px;
+}
+.mr-40 {
+  margin-right: 40px;
+}
+.mr-10 {
+  margin-right: 10px;
+}
+.ml-30 {
+  margin-left: 30px;
+}
+.ml-20 {
+  margin-left: 20px;
+}
+.ml-40 {
+  margin-left: 40px;
+}
+.ml-10 {
+  margin-left: 10px;
+}
 
 .header {
   background-color: #00B050;
@@ -107,3 +155,44 @@
   text-align: justify;
   line-height: 1.4;
 }
+
+.listclass-title {
+  color: #646464;
+  font-size: 20px;
+  font-weight: 700;
+  margin-right: 60px;
+}
+
+.listclass-title-sub {
+  color: #646464;
+  font-size: 16px;
+  margin-right: 60px;
+}
+
+#searcharea-select-dropdown {
+  background-color: white;
+  border-color: #00B050;
+  color: #646464;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.singleclass-card {
+  border: 1px solid #00B050;
+}
+.singleclass-card-idclass {
+  width: 100%;
+  padding: 10px;
+  background-color: #00B050;
+  color: white;
+  font-weight: 600;
+  text-align: center;
+}
+
+.singleclass-card-content {
+  padding: 15px 15px 5px 15px;
+}
+
+
