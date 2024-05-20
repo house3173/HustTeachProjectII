@@ -1,24 +1,24 @@
 import Header from '../components/home/Header'
 import NavbarMenu from '../components/home/NavbarMenu'
+import Introduce from '../components/home/Introduce'
 import Footer from '../components/home/Footer'
-import DetailClassSub from '../components/classes/DetailClassSub'
-import { useContext } from 'react'
+import {useContext } from 'react'
 import { ActorContext } from '../contexts/actorContext'
+import LoginForm from '../components/home/LoginForm'
 
-const DetailClass = () => {
+const Login = () => {
     const {actorState, dispatch} = useContext(ActorContext)
-
     const currentRoleActor = JSON.parse(localStorage.getItem('actorState'));
 
-    return (
+    console.log(actorState.actor)
+	return (
         <>
             <Header roleHeader = {currentRoleActor}/>
-            {/* <Header roleHeader = 'mainHome'/> */}
             <NavbarMenu/>
-            <DetailClassSub/>
+            <LoginForm/>
             <Footer/>
         </>
-    )
+	)
 }
 
-export default DetailClass
+export default Login

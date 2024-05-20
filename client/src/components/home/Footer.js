@@ -6,7 +6,7 @@ import facebook from '../../assets/images/facebook.png'
 import youtube from '../../assets/images/youtube.png'
 const Footer = () => {
     return (
-        <div>
+        <div className="mt-30">
             <div className="home-footer">
                 <Container>
                     <Row>

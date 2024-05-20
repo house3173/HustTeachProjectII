@@ -3,9 +3,7 @@ import filterIcon from '../../assets/images/filter.png'
 import DropdownCheckbox from "./DropdownCheckbox"
 import { useState } from "react"
 
-const SearchArea = () => {
-
-    const numberClass = 100
+const SearchArea = ({tabList}) => {
 
     const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
 
@@ -37,9 +35,9 @@ const SearchArea = () => {
     return (
         <Container className="mt-30">
             <div>
-                <span className="listclass-title">Danh sách lớp mới</span>
-                <span className="listclass-title-sub">{`(Đang có ${numberClass} lớp mới)`}</span>
-                <a href="/">Xem danh sách lớp phù hợp</a>
+                <span className="listclass-title">{tabList.title}</span>
+                <span className="listclass-title-sub">{`(Đang có ${tabList.numberClass} ${tabList.type})`}</span>
+                <a href={tabList.href}>{tabList.hrefContent}</a>
             </div>
 
             <div>

@@ -7,7 +7,7 @@ import SingleClass from "../components/classes/SingleClass"
 import { useContext } from 'react'
 import { ActorContext } from '../contexts/actorContext'
 
-const ListClasses = () => {
+const ListSuitableClasses = () => {
     const {actorState, dispatch} = useContext(ActorContext)
     const currentRoleActor = JSON.parse(localStorage.getItem('actorState'));
 
@@ -45,11 +45,11 @@ const ListClasses = () => {
     }
 
     const tabList = {
-        title: "Danh sách lớp mới",
+        title: "Danh sách lớp phù hợp",
         numberClass: 10,
-        type: "lớp mới",
-        href: "/danh-sach-lop-phu-hop",
-        hrefContent: "Xem danh sách lớp phù hợp"
+        type: "lớp phù hợp",
+        href: "/danh-sach-lop",
+        hrefContent: "Xem danh sách lớp mới"
     }
     
     const listClass = Array(10).fill(oneClass);
@@ -74,4 +74,4 @@ const ListClasses = () => {
     )
 }
 
-export default ListClasses
+export default ListSuitableClasses
