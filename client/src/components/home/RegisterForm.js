@@ -3,10 +3,11 @@ import { Container, Row, Col, Button, Form, FloatingLabel } from 'react-bootstra
 import google from '../../assets/images/google.png'
 import { ActorContext } from '../../contexts/actorContext';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 const RegisterForm = () => {
 
-    const {actorState, dispatch} = useContext(ActorContext)
+    const {actorState, dispatch, registerTutor} = useContext(ActorContext)
     const navigate = useNavigate()
 
     const currentRoleActor = JSON.parse(localStorage.getItem('actorState'));
@@ -22,6 +23,37 @@ const RegisterForm = () => {
         dispatch({type: "RESET_ACTOR", payload : roleData})
         navigate(navi)
     }
+
+    // Local state
+	const [registerForm, setRegisterForm] = useState({
+		name: '',
+        email: '',
+		password: ''
+	})
+
+	const { name, email, password } = registerForm
+
+	const onChangeRegisterForm = event => {
+        setRegisterForm({ ...registerForm, [event.target.name]: event.target.value })
+    }
+
+    const register = async event => {
+		event.preventDefault()
+        console.log(registerForm)
+		try {
+            if(currentRoleActor === 'tutorLoginHome') {
+                const registerData = await registerTutor(registerForm)
+                console.log(registerData)
+                if(registerData.success) {
+                    navigate('/dang-nhap')
+                }
+            } else {
+
+            }
+		} catch (error) {
+			console.log(error)
+		}
+	}
 
     return (
         <Container className='mb-30'>
@@ -46,13 +78,20 @@ const RegisterForm = () => {
                     </div>
                 </Col>
                 <Col md={6} style={{padding: '0 40px', textAlign: "center"}}>
-                    <Form>
+                    <Form onSubmit={register}>
                         <FloatingLabel
                             controlId="formFullName"
                             label="Họ và tên"
                             className="mb-3"
                         >
-                            <Form.Control type="text" placeholder="Nhập họ tên" />
+                            <Form.Control 
+                                type="text" 
+                                placeholder="Nhập họ tên"
+                                name="name"
+                                value={registerForm.name}
+                                onChange={onChangeRegisterForm}
+                                required
+                            />
                         </FloatingLabel>
 
                         <FloatingLabel
@@ -60,7 +99,14 @@ const RegisterForm = () => {
                             label="Email"
                             className="mb-3"
                         >
-                            <Form.Control type="email" placeholder="Nhập email" />
+                            <Form.Control 
+                                type="email" 
+                                placeholder="Nhập email"
+                                name="email"
+                                value={registerForm.email}
+                                onChange={onChangeRegisterForm}
+                                required
+                            />
                         </FloatingLabel>
 
                         <FloatingLabel
@@ -68,7 +114,14 @@ const RegisterForm = () => {
                             label="Mật khẩu"
                             className="mb-3"
                         >
-                            <Form.Control type="password" placeholder="Nhập mật khẩu" />
+                            <Form.Control 
+                                type="password" 
+                                placeholder="Nhập mật khẩu"
+                                name="password"
+                                value={registerForm.password}
+                                onChange={onChangeRegisterForm}
+                                required
+                            />
                         </FloatingLabel>
 
                         <Button className='button-css' type="submit">

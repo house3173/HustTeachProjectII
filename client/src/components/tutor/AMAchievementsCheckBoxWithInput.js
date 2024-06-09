@@ -1,19 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, FloatingLabel } from 'react-bootstrap';
 
-const AMAchievementsCheckBoxWithInput = ({ id, label, onChange }) => {
-  const [checked, setChecked] = useState(false);
-  const [inputValue, setInputValue] = useState('');
+const AMAchievementsCheckBoxWithInput = ({ id, label, onChange, checkedBox, inputValue: initialInputValue }) => {
+  const [checked, setChecked] = useState(checkedBox);
+  const [inputValue, setInputValue] = useState(initialInputValue);
+
+  useEffect(() => {
+    setChecked(checkedBox);
+  }, [checkedBox]);
+
+  useEffect(() => {
+    setInputValue(initialInputValue);
+  }, [initialInputValue]);
 
   const handleCheckboxChange = (e) => {
-    setChecked(e.target.checked);
-    onChange(id, e.target.checked ? inputValue : null);
+    const isChecked = e.target.checked;
+    setChecked(isChecked);
+    onChange(id, isChecked, isChecked ? inputValue : null);
   };
 
   const handleInputChange = (e) => {
-    setInputValue(e.target.value);
+    const value = e.target.value;
+    setInputValue(value);
     if (checked) {
-      onChange(id, e.target.value);
+      onChange(id, checked, value);
     }
   };
 

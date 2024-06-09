@@ -1,14 +1,19 @@
 import { Col, Container, Row, Form, Button, FloatingLabel} from "react-bootstrap"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import play from '../../assets/images/play.png'
 import AMBasicInfo from "./AMBasicInfo";
 import AMAchievements from "./AMAchievements";
-import AMExperience from "./AMExperience";
 import AMRegisterClass from "./AMRegisterClass";
 import AMManageClasses from "./AMManageClasses";
 
 const AccountManagement = () => {
-    const [activeTab, setActiveTab] = useState('BasicInfo');
+    
+    // const tutorState = JSON.parse(localStorage.getItem('tutorState'));
+    let initTag = 'BasicInfo'
+    // if(tutorState) {
+    //     initTag = tutorState
+    // }
+    const [activeTab, setActiveTab] = useState(initTag);
 
     const renderContent = () => {
       switch (activeTab) {
@@ -16,8 +21,6 @@ const AccountManagement = () => {
           return <AMBasicInfo />;
         case 'Achievements':
           return <AMAchievements />;
-        case 'Experience':
-          return <AMExperience />;
         case 'RegisterClass':
           return <AMRegisterClass />;
         case 'ManageClasses':
@@ -27,6 +30,7 @@ const AccountManagement = () => {
       }
     };
 
+    // useEffect(() => {}, [activeTab])
     return (
         <Container>
             <div className="listclass-title mt-30 mb-20"><span >Quản lý tài khoản</span></div>
@@ -44,10 +48,7 @@ const AccountManagement = () => {
                             <img src={play} alt="arrow right" className="image-css-16 ml-30 mr-10 mb-10"/>
                             <span className="span-css-blue-16" onClick={() => setActiveTab('Achievements')}>Thành tích</span>
                         </div>
-                        <div>
-                            <img src={play} alt="arrow right" className="image-css-16 ml-30 mr-10 mb-10"/>
-                            <span className="span-css-blue-16" onClick={() => setActiveTab('Experience')}>Kinh nghiệm</span>
-                        </div>
+
                     </div>
 
                     <div>

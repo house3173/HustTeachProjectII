@@ -9,9 +9,11 @@ import { ActorContext } from "../../contexts/actorContext"
 const TutorMain = () => {
     const {actorState, dispatch} = useContext(ActorContext)
     console.log(actorState.actor)
+    const currentRoleActor = JSON.parse(localStorage.getItem('actorState'));
+
 	return (
         <>
-            <Header roleHeader = {actorState.actor}/>
+            <Header roleHeader = {currentRoleActor}/>
             <NavbarMenu/>
             <AccountManagement/>
             <Footer/>

@@ -62,6 +62,11 @@
   height: 20px;
 }
 
+.image-css-16 {
+  width: 16px;
+  height: 16px;
+}
+
 .span-css-green-18 {
   font-size: 18px;
   color: #00B050;
@@ -74,10 +79,13 @@
   font-weight: 550;
 }
 
-
-.image-css-16 {
-  width: 16px;
-  height: 16px;
+.alert-css {
+    position: fixed;
+    top: 10px; /* Khoảng cách từ phía trên cùng của cửa sổ */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .header {
@@ -131,6 +139,7 @@
   right: 10%;
   transform: translateY(-50%);
   padding: 20px;
+  text-align: center;
 }
 
 .home-introduce-span {
@@ -143,6 +152,8 @@
   margin: 0 30px;
   padding: 10px;
   background-color: #00B050;
+  width: 60%;
+  transform: translateX(20%);
 }
 
 .home-footer {

@@ -5,6 +5,8 @@ import { ActorContext } from "../../contexts/actorContext"
 const NavbarMenu = () => {
 
     const {actorState, dispatch} = useContext(ActorContext)
+    const currentRoleActor = JSON.parse(localStorage.getItem('actorState'));
+
 
     const setActorState = (roleData) => {
         dispatch({type: "RESET_ACTOR", payload : roleData})
@@ -12,7 +14,7 @@ const NavbarMenu = () => {
 
     let navbarMenu 
 
-    if(actorState.actor === 'mainHome' || actorState.actor === 'tutorLoginHome' || actorState.actor === 'parentsLoginHome') {
+    if(currentRoleActor === 'mainHome' || currentRoleActor === 'tutorLoginHome' || currentRoleActor === 'parentsLoginHome') {
         navbarMenu = (
             <Navbar expand="lg" className="bg-body-tertiary" style={{borderBottom: "0.5px solid #646464"}}>
                 <Container>
@@ -32,7 +34,7 @@ const NavbarMenu = () => {
         )
     }
 
-    if(actorState.actor === 'tutorMainHome') {
+    if(currentRoleActor === 'tutorMainHome') {
         navbarMenu = (
             <Navbar expand="lg" className="bg-body-tertiary" style={{borderBottom: "0.5px solid #646464"}}>
                 <Container>
@@ -52,7 +54,7 @@ const NavbarMenu = () => {
         )
     }
 
-    if(actorState.actor === 'parentsMainHome') {
+    if(currentRoleActor === 'parentsMainHome') {
         navbarMenu = (
             <Navbar expand="lg" className="bg-body-tertiary" style={{borderBottom: "0.5px solid #646464"}}>
                 <Container>

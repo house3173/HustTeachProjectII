@@ -1,1 +1,23 @@
 GET http://localhost:5000
+
+###
+
+POST http://localhost:5000/api/tutor/register
+Content-Type: application/json
+
+{
+    "tutorName": "Trịnh Văn Hậu",
+    "tutorEmail": "trinhvanhau2003@gmail.com",
+    "tutorPassword": "giasuhau"
+}
+
+###
+
+POST http://localhost:5000/api/tutor/login
+Content-Type: application/json
+
+{
+    "tutorEmail": "trinhvanhau2003@gmail.com",
+    "tutorPassword": "giasuhau"
+}
+

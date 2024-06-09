@@ -1,8 +1,17 @@
-import { Col, Container, Row, Form, Button, FloatingLabel} from "react-bootstrap"
-import { useState } from "react";
+import { Col, Container, Row, Form, Button, FloatingLabel, ToastContainer, Toast} from "react-bootstrap"
+import { useState, useContext, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { ActorContext } from "../../contexts/actorContext"
+import { TutorContext } from "../../contexts/tutorContext"
+import AccountManagement from "./AccountManagement"
 
 const AMBasicInfo = () => {
-    const [formData, setFormData] = useState({
+    const {tutorState, dispatch, saveTutorInfo, getTutorInfo} = useContext(TutorContext)
+    const navigate = useNavigate()
+
+    const [showToast, setShowToast] = useState(false);
+
+    const initFormData = {
         profilePicture: null,
         profilePicturePreview: '',
         universityProof: null,
@@ -15,7 +24,41 @@ const AMBasicInfo = () => {
         major: '',
         startTime: '',
         endTime: ''
-      });
+    };
+    
+    const [formData, setFormData] = useState(initFormData);
+    
+    useEffect(() => {
+        async function fetchData() {
+            const tutor = JSON.parse(localStorage.getItem('currentTutor'));
+            console.log(tutor);
+            try {
+                const responseData = await getTutorInfo(tutor);
+                console.log(responseData);
+                if (responseData.success) {
+                    const tutorInfo = responseData.existingTutorInfo;
+                    setFormData({
+                        profilePicture: tutorInfo.tutorImage,
+                        universityProof: tutorInfo.tutorFileUni,
+                        fullName: tutorInfo.tutorName,
+                        phoneNumber: tutorInfo.tutorPhone,
+                        gender: tutorInfo.tutorGender,
+                        birthYear: tutorInfo.tutorYear,
+                        role: tutorInfo.tutorType,
+                        university: tutorInfo.tutorUni,
+                        major: tutorInfo.tutorMajor,
+                        startTime: tutorInfo.tutorStart,
+                        endTime: tutorInfo.tutorEnd,
+                    });
+                    console.log(formData);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchData();
+    }, []);
+    
     
       const handleChange = (e) => {
         const { name, value, files } = e.target;
@@ -56,9 +99,22 @@ const AMBasicInfo = () => {
         }
       };
     
-      const handleSubmit = (e) => {
+      const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(formData);
+        try {
+            const saveInfoRes = await saveTutorInfo(formData);
+            console.log(saveInfoRes)
+            if(saveInfoRes.success) {
+                dispatch({type: "RESET_AM_TAG", payload : {am_tag: 'Achievements'}})
+            }
+            setShowToast(true);
+            setTimeout(() => setShowToast(false), 3000);
+
+
+        } catch (error) {
+            console.log(error);
+        }
       };
 
       const handleOpenProof = () => {
@@ -83,6 +139,7 @@ const AMBasicInfo = () => {
                                         type="file" 
                                         name="profilePicture"
                                         onChange={handleChange}
+                                        
                                     />
                                     {formData.profilePicturePreview && (
                                         <img 
@@ -99,6 +156,7 @@ const AMBasicInfo = () => {
                                         type="file" 
                                         name="universityProof"
                                         onChange={handleChange}
+                                        
                                     />
                                     {formData.universityProof && (
                                         <Button 
@@ -121,6 +179,7 @@ const AMBasicInfo = () => {
                                         name="fullName"
                                         value={formData.fullName}
                                         onChange={handleChange}
+                                        required
                                     />
                                 </FloatingLabel>
 
@@ -131,6 +190,7 @@ const AMBasicInfo = () => {
                                         name="phoneNumber"
                                         value={formData.phoneNumber}
                                         onChange={handleChange}
+                                        required
                                     />
                                 </FloatingLabel>
 
@@ -139,6 +199,7 @@ const AMBasicInfo = () => {
                                         name="gender"
                                         value={formData.gender}
                                         onChange={handleChange}
+                                        required
                                     >
                                         <option value="">Chọn giới tính</option>
                                         <option value="Nam">Nam</option>
@@ -154,6 +215,7 @@ const AMBasicInfo = () => {
                                         name="birthYear"
                                         value={formData.birthYear}
                                         onChange={handleChange}
+                                        required
                                     />
                                 </FloatingLabel>
 
@@ -167,6 +229,7 @@ const AMBasicInfo = () => {
                                             value="Sinh viên"
                                             checked={formData.role === 'Sinh viên'}
                                             onChange={handleChange}
+                                            required
                                         />
 
                                         <Form.Check
@@ -177,6 +240,7 @@ const AMBasicInfo = () => {
                                             value="Giáo viên"
                                             checked={formData.role === 'Giáo viên'}
                                             onChange={handleChange}
+                                            required
                                         />
                                     </div>
                                 </Form.Group>
@@ -188,6 +252,7 @@ const AMBasicInfo = () => {
                                         name="university"
                                         value={formData.university}
                                         onChange={handleChange}
+                                        required
                                     />
                                 </FloatingLabel>
 
@@ -198,6 +263,7 @@ const AMBasicInfo = () => {
                                         name="major"
                                         value={formData.major}
                                         onChange={handleChange}
+                                        required
                                     />
                                 </FloatingLabel>
 
@@ -208,6 +274,7 @@ const AMBasicInfo = () => {
                                         name="startTime"
                                         value={formData.startTime}
                                         onChange={handleChange}
+                                        required
                                     />
                                 </FloatingLabel>
 
@@ -218,6 +285,7 @@ const AMBasicInfo = () => {
                                         name="endTime"
                                         value={formData.endTime}
                                         onChange={handleChange}
+                                        required
                                     />
                                 </FloatingLabel>
 
@@ -229,6 +297,16 @@ const AMBasicInfo = () => {
                             </Form>
                         </Col>
                     </Row>
+                
+                    <ToastContainer style={{position: 'fixed', top: '50px', right: '0px'}} >
+                        <Toast show={showToast} onClose={() => setShowToast(false)} delay={3000} autohide>
+                            <Toast.Header>
+                                <strong className="me-auto">Thông báo</strong>
+                            </Toast.Header>
+                            <Toast.Body>Thông tin đã được lưu thành công.</Toast.Body>
+                        </Toast>
+                    </ToastContainer>
+
         </div>
     )
 

@@ -6,13 +6,14 @@ const cors = require('cors')
 
 // Import from created file
 require('dotenv').config()
+const tutorRouter = require('./routes/tutor')
 // const authRouter = require('./routes/auth')
 // const postRouter = require('./routes/post')
 
 
 const connectDB = async () => {
     try {
-        await mongoose.connect(`mongodb+srv://trinhvanhau2003:310703@hustteach.zjvmpvi.mongodb.net/`, {
+        await mongoose.connect(`mongodb+srv://trinhvanhau2003:310703@hustteach.zjvmpvi.mongodb.net/Hust`, {
             // useCreateIndex: true,
             // useNewUrlParser: true,
             // useUnifiedTopology: true,
@@ -32,7 +33,7 @@ const app = express();
 app.use(express.json())
 app.use(cors())
 
-// app.use('/api/auth', authRouter);
+app.use('/api/tutor', tutorRouter);
 // app.use('/api/posts', postRouter);
 
 app.get('/', (req,res) => res.send('Hello world!'));

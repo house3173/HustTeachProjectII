@@ -10,10 +10,13 @@ import ListClasses from './views/ListClasses';
 import ClassContextProvider from './contexts/classContext';
 import DetailClass from './views/DetailClass';
 import ActorContextProvider, { ActorContext } from './contexts/actorContext';
+import TutorContextProvider from './contexts/tutorContext';
 import ListSuitableClasses from './views/ListSuitableClasses';
 import Register from './views/Register';
 import Login from './views/Login';
 import TutorMain from './views/tutorView/TutorMain';
+import TutorRegisterClass from './views/tutorView/TutorRegisterClass';
+
 
 function App() {
 
@@ -23,27 +26,30 @@ function App() {
 
   return (
     <ActorContextProvider>
-      <ClassContextProvider>
-        <Router>
-          <Routes>
-            <Route path="/" element={<><a href='/trang-chu'>Home page</a></>} />
-            <Route path="/trang-chu" element={<Home/>} />
-            <Route path="/dang-ky" element={<Register/>} />
-            <Route path="/dang-nhap" element={<Login/>} />
-            <Route path="/gioi-thieu" element={<Introduction/>} />
-            <Route path="/danh-sach-lop" element={<ListClasses/>} />
-            <Route path="/danh-sach-lop-phu-hop" element={<ListSuitableClasses/>} />
-            <Route path="/chi-tiet-lop" element={<DetailClass/>} />
+      <TutorContextProvider>
+        <ClassContextProvider>
+          <Router>
+            <Routes>
+              <Route path="/" element={<><a href='/trang-chu'>Home page</a></>} />
+              <Route path="/trang-chu" element={<Home/>} />
+              <Route path="/dang-ky" element={<Register/>} />
+              <Route path="/dang-nhap" element={<Login/>} />
+              <Route path="/gioi-thieu" element={<Introduction/>} />
+              <Route path="/danh-sach-lop" element={<ListClasses/>} />
+              <Route path="/danh-sach-lop-phu-hop" element={<ListSuitableClasses/>} />
+              <Route path="/chi-tiet-lop" element={<DetailClass/>} />
 
-            {/* View and route Gia su */}
-            <Route path="/gia-su" element={<TutorMain/>} />
+              {/* View and route Gia su */}
+              <Route path="/gia-su/dang-ky-lop" element={<TutorRegisterClass/>} />
+              <Route path="/gia-su" element={<TutorMain/>} />
 
-            {/* <Route path="/login" element={<Auth authRoute="login" />} />
-            <Route path="/register" element={<Auth authRoute="register" />} /> */}
-          </Routes>
-        </Router>
+              {/* <Route path="/login" element={<Auth authRoute="login" />} />
+              <Route path="/register" element={<Auth authRoute="register" />} /> */}
+            </Routes>
+          </Router>
 
-      </ClassContextProvider>
+        </ClassContextProvider>
+        </TutorContextProvider>
     </ActorContextProvider>
   );
 }

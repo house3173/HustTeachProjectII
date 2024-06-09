@@ -2,7 +2,20 @@ import { Button, Container, Row, Col} from "react-bootstrap"
 import camKetImg from '../../assets/images/cam-ket-tien-bo.svg'
 import dayHieuQuaImg from '../../assets/images/phuong-phap-day-hieu-qua.svg'
 import hocThuImg from '../../assets/images/hoc-thu-2-buoi.svg'
+import { useContext } from 'react'
+import { ActorContext } from '../../contexts/actorContext'
+import { useNavigate } from 'react-router-dom'
+
 const Introduce = () => {
+    const navigate = useNavigate()
+
+    const {actorState, dispatch} = useContext(ActorContext)
+
+    const setActorState = (roleData, navi) => {
+        dispatch({type: "RESET_ACTOR", payload : roleData})
+        navigate(navi)
+    }
+
     return (
         <div>
             <div className="home-introduce">
@@ -14,9 +27,9 @@ const Introduce = () => {
                         Với sứ mệnh <span className="home-introduce-span">“Kết nối tri thức - Vì thế hệ tương lai của đất nước”</span>, 
                         trung tâm luôn giữ vững tinh thần làm việc <span className="home-introduce-span">Tậm tâm - Chân thành - Chất lượng - Uy tín</span>
                     </p>
-                    <Button variant="success" size="sm" className='home-introduce-btn' href='/'><strong>Đăng ký làm gia sư</strong></Button>
+                    <Button variant="success" size="sm" className='home-introduce-btn' onClick={() => setActorState('tutorLoginHome', '/dang-ky')}><strong>Đăng ký làm gia sư</strong></Button>
                     <br></br>
-                    <Button variant="success" size="sm" className='home-introduce-btn' href='/'><strong>Đăng ký thuê gia sư</strong></Button>
+                    <Button variant="success" size="sm" className='home-introduce-btn' onClick={() => setActorState('parentsLoginHome', '/dang-ky')}><strong>Đăng ký thuê gia sư</strong></Button>
                 </div>
             </div>
 

@@ -102,16 +102,25 @@ const Header = ({roleHeader}) => {
         )  
     }
     else if(roleHeader === 'tutorMainHome' || roleHeader === 'parentsMainHome') {
+        const currentTutor = JSON.parse(localStorage.getItem('currentTutor'));
+        const currentParents = JSON.parse(localStorage.getItem('currentParents'));
+        let name
+        if(currentTutor) {
+            name = currentTutor.tutorName;
+        }
+        if(currentParents) {
+            name = currentParents.parentName;
+        }
         groupButtonHeader = (
             <div className='header-register-contact'> 
                     <div style={{display: 'flex', alignItems: 'center'}}>
                         <img src={profile} alt="avatar" 
                             style={{backgroundColor: "#646464", width: "36px", height: "36px", border: 'none', borderRadius: '50%'}} />
-                        <div><span className='ml-10 mr-10' style={{color: 'white', fontSize: '21px'}}><strong>Trịnh Văn Hậu</strong></span></div>
+                        <div><span className='ml-10 mr-10' style={{color: 'white', fontSize: '21px'}}><strong>{`${name}`}</strong></span></div>
                         <img src={down} alt='' width="20px" height="20px"/>
                     </div>
                     <Button variant="light" size="sm" className='header-button-register' href='/'><strong>Quản lý tài khoản</strong></Button>
-                    <Button variant="warning" size="sm" className='header-button-register' href='/home'><strong>Đăng xuất</strong></Button>
+                    <Button variant="warning" size="sm" className='header-button-register' onClick={() => setActorState('mainHome', '/trang-chu')}><strong>Đăng xuất</strong></Button>
             </div>
         )
     } else if(roleHeader === 'staffMainHome') {
