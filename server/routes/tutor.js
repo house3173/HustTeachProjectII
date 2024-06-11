@@ -4,6 +4,7 @@ const router = express.Router();
 const Tutor = require('../models/Tutor');
 const TutorInfo = require('../models/tutorManagement/TutorInfo');
 const TutorAchi = require('../models/tutorManagement/TutorAchi');
+const TutorSuitable = require('../models/tutorManagement/TutorSuitable')
 
 // @route POST api/tutor/register
 // @desc Register tutor
@@ -155,6 +156,48 @@ router.post('/getAchievement', async (req, res) => {
             res.json({success: true, message: "Get Achievement suceesfull", existingTutorAchi})
         } else {
             res.json({success: false, message: "Not exist Achievement"})
+        }
+    } catch (error) {
+        res.json({success: false, message: "Interval server error"})
+    }
+})
+
+// @route POST api/tutor/saveSuitable
+// @desc Tutor save class suitable
+// @access Public
+router.post('/saveSuitable', async (req, res) => {
+    const tutorSuitable = req.body;
+
+    try {
+        const existingTutorSuitable = await TutorSuitable.findOne({ tutorId: tutorSuitable.tutorId });
+
+        if (existingTutorSuitable) {
+            // Nếu tìm thấy, thực hiện cập nhật
+            await TutorSuitable.updateOne({ tutorId: tutorSuitable.tutorId }, tutorSuitable);
+            return res.status(200).json({ success: true, message: 'Tutor suitable is updated successfully' });
+        } else {
+            // Nếu không tìm thấy, thực hiện lưu mới
+            const newTutorSuitable = new TutorSuitable(tutorSuitable);
+            await newTutorSuitable.save();
+            return res.status(200).json({ success: true, message: 'Tutor suitable is saved successfully' });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+})
+
+// @route POST api/tutor/getSuitable
+// @desc Tutor get info
+// @access Public
+router.post('/getSuitable', async (req, res) => {
+    const tutor = req.body
+    try {
+        const existingTutorSuitable = await TutorSuitable.findOne({ tutorId: tutor.tutorId });
+        if(existingTutorSuitable) {
+            res.json({success: true, message: "Get Suitable suceesfull", existingTutorSuitable})
+        } else {
+            res.json({success: false, message: "Not exist Suitable"})
         }
     } catch (error) {
         res.json({success: false, message: "Interval server error"})

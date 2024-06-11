@@ -82,13 +82,42 @@ const TutorContextProvider = ({children}) => {
         }
     }
 
+    const saveTutorSuitable = async (formData) => {
+        try {
+            const currentTutor = JSON.parse(localStorage.getItem('currentTutor'));
+            const tutorSuitableForm = {
+                "tutorId": currentTutor.tutorId,
+                ...formData
+            }
+        
+            const response = await axios.post(`${apiUrl}/tutor/saveSuitable`, tutorSuitableForm);
+            return response.data
+
+        } catch (error) {
+            if (error.response.data) return error.response.data
+			else return { success: false, message: error.message }
+        }
+    }
+
+    const getTutorSuitable = async (tutor) => {
+        try {
+            const response = await axios.post(`${apiUrl}/tutor/getSuitable`, tutor);
+            return response.data
+        } catch (error) {
+            if (error.response.data) return error.response.data
+			else return { success: false, message: error.message }
+        }
+    }
+
     const tutorContextData = {
         tutorState,
         dispatch,
         saveTutorInfo,
         getTutorInfo,
         saveTutorAchi,
-        getTutorAchi
+        getTutorAchi,
+        saveTutorSuitable,
+        getTutorSuitable
     }
 
     return (

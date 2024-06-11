@@ -7,9 +7,7 @@ const cors = require('cors')
 // Import from created file
 require('dotenv').config()
 const tutorRouter = require('./routes/tutor')
-// const authRouter = require('./routes/auth')
-// const postRouter = require('./routes/post')
-
+const subjectRouter = require('./routes/subject')
 
 const connectDB = async () => {
     try {
@@ -34,6 +32,7 @@ app.use(express.json())
 app.use(cors())
 
 app.use('/api/tutor', tutorRouter);
+app.use('/api/subject', subjectRouter);
 // app.use('/api/posts', postRouter);
 
 app.get('/', (req,res) => res.send('Hello world!'));

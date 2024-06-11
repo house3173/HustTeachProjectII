@@ -21,3 +21,6 @@ Content-Type: application/json
     "tutorPassword": "giasuhau"
 }
 
+###
+GET http://localhost:5000/api/subject/getAll
+
