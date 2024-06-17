@@ -24,3 +24,87 @@ Content-Type: application/json
 ###
 GET http://localhost:5000/api/subject/getAll
 
+###
+GET http://localhost:5000/api/classes/getAll/PH0001
+
+### 
+POST http://localhost:5000/api/waitClass/registerClass
+Content-Type: application/json
+
+{
+    "tutorId": "GS0001", 
+    "classId": "L0002", 
+    "parentsId": "PH0001", 
+    "timeFree": "Các buổi tối (18h-22h) thứ 2,4,6. Các buổi chiều (… 7. Buổi sáng (8h-12h) thứ 5. Cả ngày (8h-22h) CN", 
+    "address": "46 Phạm Ngọc Thạch, Đống Đa",
+    "status": "Đang chờ",
+    "reason": ""
+}
+
+###
+POST http://localhost:5000/api/waitclass/updateWaitClass
+Content-Type: application/json
+
+{
+    "tutorId": "GS0001", 
+    "classId": "L0002", 
+    "status": "Từ chối",
+    "reason": "Phụ huynh cảm thấy không phù hợp"
+}
+
+###
+GET http://localhost:5000/api/classes/getAllByTutor/GS0001
+
+###
+GET http://localhost:5000/api/waitclass/getAllByClassId/L0001
+
+###
+GET http://localhost:5000/api/evalutetutor/getEvalute/L0008
+
+###
+GET http://localhost:5000/api/evalutetutor/getEvaluteByTutorId/GS0001
+
+###
+GET http://localhost:5000/api/tutor/getAchievement/GS0001
+###
+POST http://localhost:5000/api/evalutetutor/addEvalute
+Content-Type: application/json
+
+{
+    "tutorId": "GS0001",
+    "classId": "L0008", 
+    "tutorGrade": "9.5",
+    "feedBack": "Gia sư rất nhiệt tình, ngoan ngoãn, lễ phép. Giúp em nhà mình tiến bộ và chăm chỉ hơn rất nhiều."
+}
+
+###
+
+PUT http://localhost:5000/api/nodeclass/updateNodeClass
+Content-Type: application/json
+
+{
+    "nodeId": "N0001",
+    "classId": "L0007",
+    "nodeDate": "2024-06-14T00:00:00.000+00:00",
+    "nodeTime": "15:00 - 17:00",
+    "nodeTopic": "Hàm số bậc nhất",
+    "nodeComment": "Học sinh hoàn thành bài tập buổi trước. Trong quá trình học, chăm chú lắng nghe và tiếp thu tốt.\n",
+    "nodeGrade": "9.5",
+    "nodeResponse": "Gia su nhiet tinh"
+}
+
+###
+
+POST  http://localhost:5000/api/nodeclass/updateNodeClass/N0001
+Content-Type: application/json
+
+{
+    # "nodeId": "N0001",
+    # "classId": "L0007",
+    # "nodeDate": "2024-06-14T00:00:00.000+00:00",
+    # "nodeTime": "15:00 - 17:00",
+    # "nodeTopic": "Hàm số bậc nhất",
+    # "nodeComment": "Học sinh hoàn thành bài tập buổi trước. Trong quá trình học, chăm chú lắng nghe và tiếp thu tốt.\n",
+    "nodeGrade": "9",
+    "nodeResponse": "Gia su nhiet tinh, on ap"
+}

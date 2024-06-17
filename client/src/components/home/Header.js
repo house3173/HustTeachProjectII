@@ -105,11 +105,14 @@ const Header = ({roleHeader}) => {
         const currentTutor = JSON.parse(localStorage.getItem('currentTutor'));
         const currentParents = JSON.parse(localStorage.getItem('currentParents'));
         let name
-        if(currentTutor) {
+        let hrefQLTK
+        if(currentTutor && roleHeader === 'tutorMainHome') {
             name = currentTutor.tutorName;
+            hrefQLTK = 'gia-su'
         }
-        if(currentParents) {
-            name = currentParents.parentName;
+        if(currentParents && roleHeader === 'parentsMainHome') {
+            name = currentParents.parentsName;
+            hrefQLTK = 'phu-huynh'
         }
         groupButtonHeader = (
             <div className='header-register-contact'> 
@@ -119,7 +122,7 @@ const Header = ({roleHeader}) => {
                         <div><span className='ml-10 mr-10' style={{color: 'white', fontSize: '21px'}}><strong>{`${name}`}</strong></span></div>
                         <img src={down} alt='' width="20px" height="20px"/>
                     </div>
-                    <Button variant="light" size="sm" className='header-button-register' href='/'><strong>Quản lý tài khoản</strong></Button>
+                    <Button variant="light" size="sm" className='header-button-register' href={`/${hrefQLTK}`}><strong>Quản lý tài khoản</strong></Button>
                     <Button variant="warning" size="sm" className='header-button-register' onClick={() => setActorState('mainHome', '/trang-chu')}><strong>Đăng xuất</strong></Button>
             </div>
         )

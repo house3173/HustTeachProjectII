@@ -8,6 +8,11 @@ const cors = require('cors')
 require('dotenv').config()
 const tutorRouter = require('./routes/tutor')
 const subjectRouter = require('./routes/subject')
+const parentsRouter = require('./routes/parents')
+const classRouter = require('./routes/classes')
+const waitRegisterClassRouter = require('./routes/waitclass')
+const nodeClassRouter = require('./routes/nodeclass')
+const evaluteTutorRouter = require('./routes/evalutetutor')
 
 const connectDB = async () => {
     try {
@@ -33,6 +38,11 @@ app.use(cors())
 
 app.use('/api/tutor', tutorRouter);
 app.use('/api/subject', subjectRouter);
+app.use('/api/parents', parentsRouter);
+app.use('/api/classes', classRouter);
+app.use('/api/waitclass', waitRegisterClassRouter);
+app.use('/api/nodeclass', nodeClassRouter);
+app.use('/api/evalutetutor', evaluteTutorRouter);
 // app.use('/api/posts', postRouter);
 
 app.get('/', (req,res) => res.send('Hello world!'));

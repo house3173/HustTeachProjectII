@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 const LoginForm = () => {
 
-    const {actorState, dispatch, loginTutor} = useContext(ActorContext)
+    const {actorState, dispatch, loginTutor, loginParents} = useContext(ActorContext)
     const navigate = useNavigate()
 
     const currentRoleActor = JSON.parse(localStorage.getItem('actorState'));
@@ -53,7 +53,14 @@ const LoginForm = () => {
                     navigate('/gia-su')
                 }
             } else {
-
+                if(currentRoleActor === 'parentsLoginHome') {
+                    const loginData = await loginParents(loginForm)
+                    console.log(loginData)
+                    if(loginData.success) {
+                        setActorState(loginSuccess, loginSuccessHref)
+                        navigate('/phu-huynh')
+                    }
+                }
             }
 		} catch (error) {
 			console.log(error)

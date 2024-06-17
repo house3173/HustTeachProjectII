@@ -42,9 +42,9 @@ const NavbarMenu = () => {
                     <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link href="/gia-su" className="navbarmenu-item">Trang chủ</Nav.Link>
-                        <Nav.Link href="/gia-sư" className="navbarmenu-item">Hướng dẫn nhận lớp</Nav.Link>
-                        <Nav.Link href="/gia-sư" className="navbarmenu-item">Hợp đồng mẫu</Nav.Link>
-                        <Nav.Link href="/gia-sư" className="navbarmenu-item">Chính sách</Nav.Link>
+                        <Nav.Link href="/gia-su" className="navbarmenu-item">Hướng dẫn nhận lớp</Nav.Link>
+                        <Nav.Link href="/gia-su" className="navbarmenu-item">Hợp đồng mẫu</Nav.Link>
+                        <Nav.Link href="/gia-su" className="navbarmenu-item">Chính sách</Nav.Link>
                         <Nav.Link href="/danh-sach-lop" className="navbarmenu-item">Danh sách lớp mới</Nav.Link>
                         <Nav.Link href="/danh-sach-lop-phu-hop" className="navbarmenu-item">Lớp phù hợp</Nav.Link>
                     </Nav>
@@ -62,10 +62,10 @@ const NavbarMenu = () => {
                     <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link href="/phu-huynh" className="navbarmenu-item">Trang chủ</Nav.Link>
-                        <Nav.Link href="/phu-huynh" className="navbarmenu-item">Thêm lớp mới</Nav.Link>
+                        <Nav.Link href="/phu-huynh/them-lop-moi" className="navbarmenu-item">Thêm lớp mới</Nav.Link>
                         <Nav.Link href="/phu-huynh" className="navbarmenu-item">Hợp đồng mẫu</Nav.Link>
                         <Nav.Link href="/phu-huynh" className="navbarmenu-item">Chính sách</Nav.Link>
-                        <Nav.Link href="/phu-huynh" className="navbarmenu-item">Quản lý lớp</Nav.Link>
+                        <Nav.Link href="/phu-huynh/quan-ly-lop" className="navbarmenu-item">Quản lý lớp</Nav.Link>
                         <Nav.Link href="/phu-huynh" className="navbarmenu-item">Liên hệ trung tâm</Nav.Link>
                     </Nav>
                     </Navbar.Collapse>

@@ -4,8 +4,10 @@ import NavbarMenu from '../components/home/NavbarMenu'
 import Footer from '../components/home/Footer'
 import { Container, Row, Col } from "react-bootstrap"
 import SingleClass from "../components/classes/SingleClass"
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { ActorContext } from '../contexts/actorContext'
+import axios from "axios"
+import { apiUrl } from "../contexts/constants"
 
 const ListClasses = () => {
     const {actorState, dispatch} = useContext(ActorContext)
@@ -21,6 +23,7 @@ const ListClasses = () => {
             addressDetail: 'Số 1 Đại Cồ Việt, phường Bách Khoa'
         },
         classFee: 200,
+        classFeeBonus: 50,
         classHour: 2,
         classSession: 2,
         classRequire: '002',
@@ -36,7 +39,7 @@ const ListClasses = () => {
         },
         classStudent: {
             studentGender: 'Nam',
-            studentLevel: 'Khá, mức 8 điểm',
+            studentLevel: 'Khá',
             studentSchool: 'Trường THPT Tạ Quang Bửu',
             studentAddInfo: '..........',
             studentGoal: 'Mục tiêu 9 điểm'
@@ -52,7 +55,23 @@ const ListClasses = () => {
         hrefContent: "Xem danh sách lớp phù hợp"
     }
     
-    const listClass = Array(10).fill(oneClass);
+    const [listClass, setListClass] = useState([])
+    useEffect(() => {
+
+        axios.get(`${apiUrl}/classes/getAll`)
+            .then(response => {
+                if(response.data.success) {
+                    const filteredClasses = response.data.classes.filter(classItem => classItem.classStatus === 'Đang tìm gia sư');
+                    setListClass(filteredClasses);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching subjects:', error);
+            });
+
+    }, []);
+
+    // const listClass = Array(10).fill(oneClass);
 
     return (
         <>

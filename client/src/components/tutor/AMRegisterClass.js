@@ -58,9 +58,16 @@ const AMRegisterClass = () => {
                 .then(response => {
                     if(response.data.success) {
                       const tutorSuitable = response.data.existingTutorSuitable;
-                      const listSubjects = subjects.filter((subject, index) => tutorSuitable.tutorListSubject[index] === '1');
+                      const subjectsCopy = response.data.subjects.map(subject => subject.subjectName);
+                      const listSubjects = subjectsCopy.filter((subject, index) => tutorSuitable.tutorListSubject[index] === '1');
                       const listGrades = grades.filter((grade, index) => tutorSuitable.tutorListGrade[index] === '1');
                       const listDistricts = districts.filter((district, index) => tutorSuitable.tutorListDistrict[index] === '1');
+                      
+                      console.log({
+                        subjects: listSubjects,
+                        grades: listGrades,
+                        districts: listDistricts,
+                      })
 
                       setFormData({
                         subjects: listSubjects,

@@ -16,6 +16,21 @@ router.get('/getAll', async (req, res) => {
     }
 })
 
+// @route GET api/subject/getSubjectFee
+// @desc get fee subjects
+// @access Public
+router.post('/getSubjectFee', async (req, res) => {
+    const subjectName = req.body
+    try {
+        const subjects = await Subject.find({subjectName});
+        const subjectFee = subjects.subjectFee
+        res.json({success: true, subjectFee});
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({success: false, message: "Interval server error"})
+    }
+})
+
 router.get('/', (req,res) => res.send('SUBJECT ROUTE'));
 
 module.exports = router

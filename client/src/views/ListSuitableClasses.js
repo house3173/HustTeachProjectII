@@ -4,8 +4,10 @@ import NavbarMenu from '../components/home/NavbarMenu'
 import Footer from '../components/home/Footer'
 import { Container, Row, Col } from "react-bootstrap"
 import SingleClass from "../components/classes/SingleClass"
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { ActorContext } from '../contexts/actorContext'
+import axios from "axios"
+import { apiUrl } from "../contexts/constants"
 
 const ListSuitableClasses = () => {
     const {actorState, dispatch} = useContext(ActorContext)
@@ -52,7 +54,22 @@ const ListSuitableClasses = () => {
         hrefContent: "Xem danh sách lớp mới"
     }
     
-    const listClass = Array(10).fill(oneClass);
+    // const listClass = Array(10).fill(oneClass);
+    const [listClass, setListClass] = useState([])
+    useEffect(() => {
+
+        axios.get(`${apiUrl}/classes/getAll`)
+            .then(response => {
+                if(response.data.success) {
+                    const filteredClasses = response.data.classes.filter(classItem => classItem.classStatus === 'Đang tìm gia sư');
+                    setListClass(filteredClasses);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching subjects:', error);
+            });
+
+    }, []);
 
     return (
         <>

@@ -21,13 +21,10 @@ const ActorContextProvider = ({children}) => {
 
             const response = await axios.post(`${apiUrl}/tutor/register`, tutorRegister);
 
-            // trả về toàn bộ phản hồi của server
             return response.data
 
         } catch (error) {
-            // Lỗi do server gửi (LTV thực hiện)
             if (error.response.data) return error.response.data
-            // Lỗi khác do hệ thống gửi
 			else return { success: false, message: error.message }
         }
     }
@@ -45,13 +42,49 @@ const ActorContextProvider = ({children}) => {
                 localStorage.setItem('currentTutor', JSON.stringify(response.data.tutorCurr));
             }
 
-            // trả về toàn bộ phản hồi của server
             return response.data
 
         } catch (error) {
-            // Lỗi do server gửi (LTV thực hiện)
             if (error.response.data) return error.response.data
-            // Lỗi khác do hệ thống gửi
+			else return { success: false, message: error.message }
+        }
+    }
+
+    const registerParents = async (registerForm) => {
+        try {
+            const ParentsRegister = {
+                "parentsName": registerForm.name,
+                "parentsEmail": registerForm.email,
+                "parentsPassword": registerForm.password
+            }
+
+            const response = await axios.post(`${apiUrl}/parents/register`, ParentsRegister);
+
+            return response.data
+
+        } catch (error) {
+            if (error.response.data) return error.response.data
+			else return { success: false, message: error.message }
+        }
+    }
+
+    const loginParents = async (loginForm) => {
+        try {
+            const ParentsLogin = {
+                "parentsEmail": loginForm.email,
+                "parentsPassword": loginForm.password
+            }
+
+            const response = await axios.post(`${apiUrl}/parents/login`, ParentsLogin);
+
+            if (response.data.success) {
+                localStorage.setItem('currentParents', JSON.stringify(response.data.parentsCurr));
+            }
+
+            return response.data
+
+        } catch (error) {
+            if (error.response.data) return error.response.data
 			else return { success: false, message: error.message }
         }
     }
@@ -62,7 +95,9 @@ const ActorContextProvider = ({children}) => {
         actorState,
         dispatch,
         registerTutor,
-        loginTutor
+        loginTutor,
+        registerParents,
+        loginParents
     }
 
     return (

@@ -5,6 +5,8 @@ const Tutor = require('../models/Tutor');
 const TutorInfo = require('../models/tutorManagement/TutorInfo');
 const TutorAchi = require('../models/tutorManagement/TutorAchi');
 const TutorSuitable = require('../models/tutorManagement/TutorSuitable')
+const Subject = require('../models/Subject');
+
 
 // @route POST api/tutor/register
 // @desc Register tutor
@@ -162,6 +164,23 @@ router.post('/getAchievement', async (req, res) => {
     }
 })
 
+// @route POST api/tutor/getAchievement
+// @desc Tutor get info
+// @access Public
+router.get('/getAchievement/:tutorId', async (req, res) => {
+    const tutorId = req.params.tutorId
+    try {
+        const existingTutorAchi = await TutorAchi.findOne({ tutorId: tutorId });
+        if(existingTutorAchi) {
+            res.json({success: true, message: "Get Achievement suceesfull", existingTutorAchi})
+        } else {
+            res.json({success: false, message: "Not exist Achievement"})
+        }
+    } catch (error) {
+        res.json({success: false, message: "Interval server error"})
+    }
+})
+
 // @route POST api/tutor/saveSuitable
 // @desc Tutor save class suitable
 // @access Public
@@ -195,7 +214,8 @@ router.post('/getSuitable', async (req, res) => {
     try {
         const existingTutorSuitable = await TutorSuitable.findOne({ tutorId: tutor.tutorId });
         if(existingTutorSuitable) {
-            res.json({success: true, message: "Get Suitable suceesfull", existingTutorSuitable})
+            const subjects = await Subject.find();
+            res.json({success: true, message: "Get Suitable suceesfull", subjects, existingTutorSuitable})
         } else {
             res.json({success: false, message: "Not exist Suitable"})
         }

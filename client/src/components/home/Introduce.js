@@ -10,11 +10,44 @@ const Introduce = () => {
     const navigate = useNavigate()
 
     const {actorState, dispatch} = useContext(ActorContext)
+    const currentRoleActor = JSON.parse(localStorage.getItem('actorState'));
 
     const setActorState = (roleData, navi) => {
         dispatch({type: "RESET_ACTOR", payload : roleData})
         navigate(navi)
     }
+
+    let groupButton1 = (
+        <>
+            <Button variant="success" size="sm" className='home-introduce-btn' onClick={() => setActorState('tutorLoginHome', '/dang-nhap')}><strong>Đăng ký làm gia sư</strong></Button>
+            <br></br>
+            <Button variant="success" size="sm" className='home-introduce-btn' onClick={() => setActorState('parentsLoginHome', '/dang-nhap')}><strong>Đăng ký thuê gia sư</strong></Button>
+        </>
+    )
+    let button2 = (
+        <>
+            <Button variant="success" size="sm" className='home-introduce-btn' style={{maxWidth: "200px", margin: "0 auto"}} onClick={() => setActorState('parentsLoginHome', '/dang-nhap')}>
+                <strong>Đăng ký thuê gia sư</strong>
+            </Button>
+        </>
+    )
+
+    if(currentRoleActor === 'parentsMainHome') {
+        groupButton1 = (
+            <>
+                <Button variant="success" size="sm" className='home-introduce-btn' style={{width: '70%', margin: '0 10px'}} href="/phu-huynh/them-lop-moi"><strong>Thêm lớp mới - Tìm gia sư ngay</strong></Button>
+            </>
+        )
+
+        button2 = (
+            <>
+                <Button variant="success" size="sm" className='home-introduce-btn' style={{maxWidth: "200px", margin: "0 auto"}} href="/phu-huynh/them-lop-moi">
+                    <strong>Thêm lớp mới - Tìm gia sư</strong>
+                </Button>
+            </>
+        )
+
+    } 
 
     return (
         <div>
@@ -27,9 +60,7 @@ const Introduce = () => {
                         Với sứ mệnh <span className="home-introduce-span">“Kết nối tri thức - Vì thế hệ tương lai của đất nước”</span>, 
                         trung tâm luôn giữ vững tinh thần làm việc <span className="home-introduce-span">Tậm tâm - Chân thành - Chất lượng - Uy tín</span>
                     </p>
-                    <Button variant="success" size="sm" className='home-introduce-btn' onClick={() => setActorState('tutorLoginHome', '/dang-ky')}><strong>Đăng ký làm gia sư</strong></Button>
-                    <br></br>
-                    <Button variant="success" size="sm" className='home-introduce-btn' onClick={() => setActorState('parentsLoginHome', '/dang-ky')}><strong>Đăng ký thuê gia sư</strong></Button>
+                    {groupButton1}
                 </div>
             </div>
 
@@ -63,7 +94,7 @@ const Introduce = () => {
                         </Col>
                         
                     </Row>
-                    <Button variant="success" size="sm" className='home-introduce-btn' style={{maxWidth: "200px", margin: "0 auto"}} href='/'><strong>Đăng ký thuê gia sư</strong></Button>
+                    {button2}
                 </Container>
             </div>
 
@@ -97,7 +128,7 @@ const Introduce = () => {
                         </Col>
                         
                     </Row>
-                    <Button variant="success" size="sm" className='home-introduce-btn' style={{maxWidth: "200px", margin: "0 auto"}} href='/'><strong>Đăng ký thuê gia sư</strong></Button>
+                    {button2}
                 </Container>
             </div>
 
@@ -131,7 +162,7 @@ const Introduce = () => {
                         </Col>
                         
                     </Row>
-                    <Button variant="success" size="sm" className='home-introduce-btn' style={{maxWidth: "200px", margin: "0 auto"}} href='/'><strong>Đăng ký thuê gia sư</strong></Button>
+                    {button2}
                 </Container>
             </div>
         </div>

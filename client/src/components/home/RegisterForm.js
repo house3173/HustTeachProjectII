@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 const RegisterForm = () => {
 
-    const {actorState, dispatch, registerTutor} = useContext(ActorContext)
+    const {actorState, dispatch, registerTutor, registerParents} = useContext(ActorContext)
     const navigate = useNavigate()
 
     const currentRoleActor = JSON.parse(localStorage.getItem('actorState'));
@@ -48,7 +48,13 @@ const RegisterForm = () => {
                     navigate('/dang-nhap')
                 }
             } else {
-
+                if(currentRoleActor === 'parentsLoginHome') {
+                    const registerData = await registerParents(registerForm)
+                    console.log(registerData)
+                    if(registerData.success) {
+                        navigate('/dang-nhap')
+                    }
+                }
             }
 		} catch (error) {
 			console.log(error)

@@ -5,6 +5,8 @@ import AMBasicInfo from "./AMBasicInfo";
 import AMAchievements from "./AMAchievements";
 import AMRegisterClass from "./AMRegisterClass";
 import AMManageClasses from "./AMManageClasses";
+import axios from "axios";
+import { apiUrl } from "../../contexts/constants";
 
 const AccountManagement = () => {
     
@@ -15,6 +17,43 @@ const AccountManagement = () => {
     // }
     const [activeTab, setActiveTab] = useState(initTag);
 
+    const currentTutor = JSON.parse(localStorage.getItem('currentTutor'));
+    const tutorId = currentTutor.tutorId;
+    const [listClass, setListClass] = useState([])
+    const [listWaitClass, setListWaitClass] = useState([])
+    const [itemClassId, setItemClassId] = useState()
+ 
+    useEffect(() => {
+        const fetchClasses = async () => {
+          try {
+            const [waitClassesResponse, tutorClassesResponse] = await Promise.all([
+              axios.get(`${apiUrl}/waitclass/getAll/${tutorId}`),
+              axios.get(`${apiUrl}/classes/getAllByTutor/${tutorId}`)
+            ]);
+    
+            if (waitClassesResponse.data.success && tutorClassesResponse.data.success) {
+              const combinedClasses = [
+                ...waitClassesResponse.data.listWaitClasses,
+                ...tutorClassesResponse.data.tutorClasses
+              ];
+              setListClass(combinedClasses);
+              setListWaitClass(waitClassesResponse.data.tutorWaitClasses);
+              setItemClassId(combinedClasses[0].classId)
+            }
+          } catch (error) {
+            console.error('Error fetching classes:', error);
+          }
+        };
+    
+        fetchClasses();
+    }, []);
+
+    const handleDetailClass = (classId) => {
+        setActiveTab('ManageClasses')
+        setItemClassId(classId)
+        console.log(classId);
+    }
+
     const renderContent = () => {
       switch (activeTab) {
         case 'BasicInfo':
@@ -24,7 +63,10 @@ const AccountManagement = () => {
         case 'RegisterClass':
           return <AMRegisterClass />;
         case 'ManageClasses':
-          return <AMManageClasses />;
+            
+            const selectedItemClass = listClass.find(itemClass => itemClass.classId === itemClassId);
+            console.log(selectedItemClass)
+            return <AMManageClasses selectedClass={selectedItemClass} listWaitClass={listWaitClass}/>;
         default:
           return <AMBasicInfo />;
       }
@@ -37,14 +79,14 @@ const AccountManagement = () => {
             <Row>
                 <Col xs={3}>
                     <div>
-                        <div className="listclass-title mb-10 ml-10" style={{color: "#00b050", fontSize: '18px'}} >
+                        <div className="listclass-title mb-10 ml-10" style={{color: "#00b050", fontSize: '18px', cursor:'pointer'}} >
                             <span onClick={() => setActiveTab('BasicInfo')}>Hồ sơ gia sư</span>
                         </div>
-                        <div>
+                        <div style={{cursor:'pointer'}}>
                             <img src={play} alt="arrow right" className="image-css-16 ml-30 mr-10 mb-10"/>
                             <span className="span-css-blue-16" onClick={() => setActiveTab('BasicInfo')}>Thông tin cơ bản</span>
                         </div>
-                        <div>
+                        <div style={{cursor:'pointer'}}>
                             <img src={play} alt="arrow right" className="image-css-16 ml-30 mr-10 mb-10"/>
                             <span className="span-css-blue-16" onClick={() => setActiveTab('Achievements')}>Thành tích</span>
                         </div>
@@ -52,15 +94,28 @@ const AccountManagement = () => {
                     </div>
 
                     <div>
-                        <div className="listclass-title mb-10 ml-10" style={{color: "#00b050", fontSize: '18px'}} >
+                        <div className="listclass-title mb-10 ml-10" style={{color: "#00b050", fontSize: '18px', cursor:'pointer'}} >
                             <span onClick={() => setActiveTab('RegisterClass')}>Đăng ký lớp phù hợp</span>
                         </div>
                     </div>
 
                     <div>
-                        <div className="listclass-title mb-10 ml-10" style={{color: "#00b050", fontSize: '18px'}} >
+                        <div className="listclass-title mb-10 ml-10" style={{color: "#00b050", fontSize: '18px', cursor: 'pointer'}} >
                             <span onClick={() => setActiveTab('ManageClasses')}>Quản lý lớp học</span>
                         </div>
+                        {
+                            listClass.map((itemClass) => (
+                                <div key={itemClass.classId} style={{cursor: 'pointer'}}>
+                                    <img src={play} alt="arrow right" className="image-css-16 ml-30 mr-10 mb-10"/>
+                                    <span 
+                                        className="span-css-blue-16" 
+                                        onClick={() => handleDetailClass(itemClass.classId)}
+                                    >
+                                            {itemClass.classId}
+                                    </span>
+                                </div>
+                              ))
+                        }
                     </div>
                 </Col>
 

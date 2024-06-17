@@ -22,32 +22,31 @@ const SingleClass = ({singleClass}) => {
         navigate('/chi-tiet-lop');
     }
 
-    // Phân giải yêu cầu của lớp học
-    let classRequire = singleClass.classRequire
-    
-
-    classRequire = convertRequire(classRequire)
+        const classFeeStr =  singleClass.classFee.map(fee => (fee*8000).toString() + ' đồng').join(' hoặc ')
 
     return (
         <div className='singleclass-card'>
             <p className="singleclass-card-idclass">{singleClass.classId}</p>
             <div className="singleclass-card-content">
-                <div className='mt-10'>
-                    <img src={book} alt='subject' width="20px" height="20px" className='mr-10'></img>
-                    <span><strong>{`${singleClass.classSubject} - Lớp ${singleClass.classGrade}`}</strong></span>
-                </div>
-                <div className='mt-10'>
-                    <img src={location} alt='location' width="20px" height="20px" className='mr-10'></img>
-                    <span>{`${singleClass.classAddress.addressDetail}, ${singleClass.classAddress.addressDistrict}, Hà Nội`}</span>
-                </div>
-                <div className='mt-10'>
-                    <img src={dollar} alt='money' width="20px" height="20px" className='mr-10'></img>
-                    <span>{`${singleClass.classFee}K/buổi, ${singleClass.classSession} buổi/tuần`}</span>
-                </div>
-                <div className='mt-10'>
-                    <img src={check} alt='require' width="20px" height="20px" className='mr-10'></img>
-                    <span>{`Yêu cầu: ${singleClass.classRequire}`}</span>
-                </div>
+                    <div className='mt-10'>
+                        <img src={book} alt='subject' width="20px" height="20px" className='mr-10'></img>
+                        <span><strong>{`${singleClass.classSubject} - ${singleClass.classGrade}`}</strong></span>
+                    </div>
+                    <div className='mt-10'>
+                        <img src={location} alt='location' width="20px" height="20px" className='mr-10'></img>
+                        <span>{`${singleClass.classAddress.addressDetail}, ${singleClass.classAddress.addressDistrict}, Hà Nội`}</span>
+                    </div>
+                    <div className='mt-10'>
+                        <img src={dollar} alt='money' width="20px" height="20px" className='mr-10'></img>
+                        <span>{`${classFeeStr}/buổi, ${singleClass.classSession} buổi/tuần`}</span>
+                    </div>
+                    <div className='mt-10'>
+                        <img src={check} alt='require' width="20px" height="20px" className='mr-10'></img>
+                        <span>{`Yêu cầu: ${singleClass.classRequireDetail.classRequireTypeTutor} - 
+                                        ${singleClass.classRequireDetail.classRequireGender} - 
+                                        ${singleClass.classRequireDetail.classRequireExper} năm kinh nghiệm `}
+                        </span>
+                    </div>
                 <div className='mt-20 mb-10' style={{textAlign: "right"}}>
                     <Button style={{color: "white", backgroundColor:"#00b050"}} onClick={getDetail}>Xem chi tiết</Button>
                 </div>

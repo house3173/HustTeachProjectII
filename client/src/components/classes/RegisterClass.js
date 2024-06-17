@@ -4,17 +4,18 @@ import dollar from '../../assets/images/dollar.png'
 import check from '../../assets/images/check-mark.png'
 import clock from '../../assets/images/clock.png'
 
-import { Container, Row, Col, Button, Breadcrumb, Form } from "react-bootstrap"
+import { Container, Row, Col, Button, Breadcrumb, Form, Modal } from "react-bootstrap"
 import { useContext, useEffect, useState } from "react"
-import { ClassContext } from "../../contexts/classContext"
-import convertRequire from '../../utils/convertRequire'
 import convertTime from '../../utils/convertTime'
+import { useNavigate } from 'react-router-dom'
+
+import axios from 'axios'
+import { apiUrl } from '../../contexts/constants'
 
 const RegisterClass = () => {
+    const navi = useNavigate()
 
     const currentClass = JSON.parse(localStorage.getItem('selectedClass'));
-
-    // const {classState, dispatch} = useContext(ClassContext)
 
     // const currentClass = classState.class
     const classSalary = currentClass.classFee * currentClass.classSession * 4 * 1000
@@ -25,6 +26,13 @@ const RegisterClass = () => {
         availableTime: '',
         currentLocation: '',
       });
+    const [showErrorModal, setShowErrorModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    
+    const handleCloseErrorModal = () => setShowErrorModal(false);
+    const handleShowErrorModal = () => setShowErrorModal(true);
+    const handleCloseSuccessModal = () => setShowSuccessModal(false);
+    const handleShowSuccessModal = () => setShowSuccessModal(true);
     
       const handleChange = (e) => {
         const { name, value } = e.target;
@@ -34,12 +42,38 @@ const RegisterClass = () => {
         });
       };
     
-      const handleSubmit = (e) => {
+      const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
+        const currentTutor = JSON.parse(localStorage.getItem('currentTutor'));
+        const currentClass = JSON.parse(localStorage.getItem('selectedClass'));
+
+        const waitRegisterClass = {
+            "tutorId": currentTutor.tutorId,
+            "classId": currentClass.classId,
+            "parentsId": currentClass.parentsId,
+            "timeFree": formData.availableTime,
+            "address": formData.currentLocation,
+            "status": 'Đang chờ',
+            "reason": ''
+        }
+
+        console.log(waitRegisterClass)
+        try {
+            const response = await axios.post(`${apiUrl}/waitclass/registerClass`, waitRegisterClass);
+            if(response.data.success) {
+                handleShowSuccessModal()
+            } else {
+                handleShowErrorModal()
+            }           
+        } catch (error) {
+            console.log(error);
+        }
       };
 
+      const classFeeStr =  currentClass.classFee.map(fee => (fee*8000).toString() + ' đồng').join(' hoặc ')
+
     return (
+        <>
         <Container className="mt-30">
             <Breadcrumb>
                 <Breadcrumb.Item href="#">*</Breadcrumb.Item>
@@ -61,7 +95,7 @@ const RegisterClass = () => {
                 <Col xs={12} md={6} style={{paddingRight: '30px'}}>
                     <div className='mt-10'>
                         <img src={book} alt='subject' width="20px" height="20px" className='mr-10'></img>
-                        <span><strong>{`${currentClass.classSubject} - Lớp ${currentClass.classGrade}`}</strong></span>
+                        <span><strong>{`${currentClass.classSubject} - ${currentClass.classGrade}`}</strong></span>
                     </div>
                     <div className='mt-10'>
                         <img src={location} alt='location' width="20px" height="20px" className='mr-10'></img>
@@ -69,11 +103,14 @@ const RegisterClass = () => {
                     </div>
                     <div className='mt-10'>
                         <img src={dollar} alt='money' width="20px" height="20px" className='mr-10'></img>
-                        <span>{`${currentClass.classFee}K/buổi, ${currentClass.classSession} buổi/tuần`}</span>
+                        <span>{`${classFeeStr}/buổi, ${currentClass.classSession} buổi/tuần`}</span>
                     </div>
                     <div className='mt-10'>
                         <img src={check} alt='require' width="20px" height="20px" className='mr-10'></img>
-                        <span>{`Yêu cầu: ${convertRequire(currentClass.classRequire)}`}</span>
+                        <span>{`Yêu cầu: ${currentClass.classRequireDetail.classRequireTypeTutor} - 
+                                        ${currentClass.classRequireDetail.classRequireGender} - 
+                                        ${currentClass.classRequireDetail.classRequireExper} năm kinh nghiệm `}
+                        </span>
                     </div>
                     <div className='mt-10'>
                         <img src={clock} alt='time' width="20px" height="20px" className='mr-10'></img>
@@ -114,6 +151,7 @@ const RegisterClass = () => {
                                 name="availableTime"
                                 value={formData.availableTime}
                                 onChange={handleChange}
+                                required
                             />
                         </Form.Group>
 
@@ -125,12 +163,13 @@ const RegisterClass = () => {
                             name="currentLocation"
                             value={formData.currentLocation}
                             onChange={handleChange}
+                            required
                         />
                         </Form.Group>
 
                         <Row className="justify-content-end">
                         <Col xs="auto">
-                            <Button className = 'mt-20' variant="primary" type="submit" onClick={handleSubmit}>
+                            <Button className = 'mt-20' variant="primary" type="submit">
                                 Hoàn thành
                             </Button>
                         </Col>
@@ -139,6 +178,52 @@ const RegisterClass = () => {
                 </Col>
             </Row>
         </Container>
+
+        <>
+            <Modal show={showErrorModal} onHide={handleCloseErrorModal}>
+            <Modal.Header closeButton>
+                <Modal.Title>Lỗi đăng ký</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+                <p>Bạn đã đăng ký lớp này trước đó. Hãy kiểm tra lại trong <a>Quản lý tài khoản</a>. <br></br>
+                Và có thể đăng ký thêm các lớp mới! Cảm ơn bạn đã tin tưởng trung tâm!!</p>
+            </Modal.Body>
+
+            <Modal.Footer>
+                <Button variant="primary" onClick={()=> {navi('/danh-sach-lop')}}>
+                    Tìm thêm lớp mới
+                </Button>
+                <Button variant="primary" onClick={()=> {navi('/gia-su')}}>
+                    Quản lý tài khoản
+                </Button>
+            </Modal.Footer>
+            </Modal>
+        </>
+
+        <>
+            <Modal show={showSuccessModal} onHide={handleCloseSuccessModal}>
+            <Modal.Header closeButton>
+                <Modal.Title>Đăng ký thành công</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+                <p>Bạn đã thành công đăng ký lớp mới. Yêu cầu của bạn sẽ được xử lý và chờ xác nhận từ trung tâm hoặc gia sư. <br></br>
+                Bạn cũng có thể đăng ký thêm các lớp mới! Cảm ơn bạn đã tin tưởng trung tâm!!</p>
+            </Modal.Body>
+
+            <Modal.Footer>
+                <Button variant="primary" onClick={()=> {navi('/danh-sach-lop')}}>
+                    Tìm thêm lớp mới
+                </Button>
+                <Button variant="primary" onClick={()=> {navi('/gia-su')}}>
+                    Quản lý tài khoản
+                </Button>
+            </Modal.Footer>
+            </Modal>
+        </>
+
+        </>
     )
 }
 export default RegisterClass

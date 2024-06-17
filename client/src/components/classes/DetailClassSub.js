@@ -72,6 +72,9 @@ const DetailClassSub = () => {
         
     }
 
+    const classFeeStr =  currentClass.classFee.map(fee => (fee*8000).toString() + ' đồng').join(' hoặc ')
+    const classFeeTutorString = currentClass.classFee.map(fee => (fee*8000).toString() + ' đồng').join(' hoặc ')
+
     return (
         <Container className="mt-30">
             <Breadcrumb>
@@ -91,7 +94,7 @@ const DetailClassSub = () => {
                 <Col xs={12} md={6} style={{paddingRight: '30px'}}>
                     <div className='mt-10'>
                         <img src={book} alt='subject' width="20px" height="20px" className='mr-10'></img>
-                        <span><strong>{`${currentClass.classSubject} - Lớp ${currentClass.classGrade}`}</strong></span>
+                        <span><strong>{`${currentClass.classSubject} - ${currentClass.classGrade}`}</strong></span>
                     </div>
                     <div className='mt-10'>
                         <img src={location} alt='location' width="20px" height="20px" className='mr-10'></img>
@@ -99,11 +102,14 @@ const DetailClassSub = () => {
                     </div>
                     <div className='mt-10'>
                         <img src={dollar} alt='money' width="20px" height="20px" className='mr-10'></img>
-                        <span>{`${currentClass.classFee}K/buổi, ${currentClass.classSession} buổi/tuần`}</span>
+                        <span>{`${classFeeStr}/buổi, ${currentClass.classSession} buổi/tuần`}</span>
                     </div>
                     <div className='mt-10'>
                         <img src={check} alt='require' width="20px" height="20px" className='mr-10'></img>
-                        <span>{`Yêu cầu: ${convertRequire(currentClass.classRequire)}`}</span>
+                        <span>{`Yêu cầu: ${currentClass.classRequireDetail.classRequireTypeTutor} - 
+                                        ${currentClass.classRequireDetail.classRequireGender} - 
+                                        ${currentClass.classRequireDetail.classRequireExper} năm kinh nghiệm `}
+                        </span>
                     </div>
                     <div className='mt-10'>
                         <img src={clock} alt='time' width="20px" height="20px" className='mr-10'></img>
@@ -121,7 +127,7 @@ const DetailClassSub = () => {
                         <li className='mt-10'>{`Thông tin bổ sung: ${currentClass.classStudent.studentAddInfo}`}</li>
                     </ul>
                     <div className='mt-10'>
-                        <span><strong>{`Mức thu nhập:   ${classSalary} đồng / tháng`}</strong></span>
+                        <span><strong>{`Mức thu nhập:   ${classFeeTutorString} đồng / tháng`}</strong></span>
                     </div>
                     <div className='mt-10'>
                         <span><strong>{`Phí nhận lớp: ${currentClass.classPercentFee}%`}</strong> {` (chỉ nộp phí 1 lần cho tháng đầu tiên)`}</span>

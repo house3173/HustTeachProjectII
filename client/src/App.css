@@ -225,7 +225,16 @@
 
 .singleclass-card {
   border: 1px solid #00B050;
+  min-height: 360px;
+  position: relative;
 }
+
+.singleclass-card-content > div:has(> button) {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
 .singleclass-card-idclass {
   width: 100%;
   padding: 10px;
@@ -237,6 +246,14 @@
 
 .singleclass-card-content {
   padding: 15px 15px 5px 15px;
+}
+
+.center-th {
+  text-align: center;
+}
+
+.center-td {
+  text-align:  center;
 }
 
 
