@@ -224,6 +224,19 @@ router.post('/getSuitable', async (req, res) => {
     }
 })
 
+// @route GET api/tutor/getAll
+// @desc get all subjects
+// @access Public
+router.get('/getAll', async (req, res) => {
+    try {
+        const tutorList = await Tutor.find();
+        res.json({success: true, tutorList});
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({success: false, message: "Interval server error"})
+    }
+})
+
 router.get('/', (req,res) => res.send('TUTOR ROUTE'));
 
 module.exports = router

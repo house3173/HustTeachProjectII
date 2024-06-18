@@ -6,7 +6,7 @@ import Footer from "../../components/home/Footer"
 import { useContext } from "react"
 import { ActorContext } from "../../contexts/actorContext"
 
-const StaffMain = () => {
+const StaffStatistic = () => {
     const {actorState, dispatch} = useContext(ActorContext)
     console.log(actorState.actor)
     const currentRoleActor = JSON.parse(localStorage.getItem('actorState'));
@@ -20,4 +20,4 @@ const StaffMain = () => {
 	)
 }
 
-export default StaffMain
+export default StaffStatistic

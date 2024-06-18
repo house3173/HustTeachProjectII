@@ -5,8 +5,9 @@ import Footer from "../../components/home/Footer"
 
 import { useContext } from "react"
 import { ActorContext } from "../../contexts/actorContext"
+import StaffManageClassTable from "../../components/staff/StaffManageClassTable"
 
-const StaffMain = () => {
+const StaffManageClass = () => {
     const {actorState, dispatch} = useContext(ActorContext)
     console.log(actorState.actor)
     const currentRoleActor = JSON.parse(localStorage.getItem('actorState'));
@@ -15,9 +16,10 @@ const StaffMain = () => {
         <>
             <Header roleHeader = {currentRoleActor}/>
             <NavbarMenu/>
+            <StaffManageClassTable/>
             <Footer/>
         </>
 	)
 }
 
-export default StaffMain
+export default StaffManageClass

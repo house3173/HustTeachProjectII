@@ -89,6 +89,22 @@ const ActorContextProvider = ({children}) => {
         }
     }
 
+    const loginStaff = async (loginForm) => {
+        try {
+             const response = await axios.post(`${apiUrl}/staff/login`, loginForm);
+
+            if (response.data.success) {
+                localStorage.setItem('currentStaff', JSON.stringify(response.data.staffCurr));
+            }
+
+            return response.data
+
+        } catch (error) {
+            if (error.response.data) return error.response.data
+			else return { success: false, message: error.message }
+        }
+    }
+
 
     // classs context data
     const actorContextData = {
@@ -97,7 +113,8 @@ const ActorContextProvider = ({children}) => {
         registerTutor,
         loginTutor,
         registerParents,
-        loginParents
+        loginParents,
+        loginStaff
     }
 
     return (

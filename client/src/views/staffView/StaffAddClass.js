@@ -5,8 +5,9 @@ import Footer from "../../components/home/Footer"
 
 import { useContext } from "react"
 import { ActorContext } from "../../contexts/actorContext"
+import FormAddClass from "../../components/classes/FormAddClass"
 
-const StaffMain = () => {
+const StaffAddClass = () => {
     const {actorState, dispatch} = useContext(ActorContext)
     console.log(actorState.actor)
     const currentRoleActor = JSON.parse(localStorage.getItem('actorState'));
@@ -15,9 +16,10 @@ const StaffMain = () => {
         <>
             <Header roleHeader = {currentRoleActor}/>
             <NavbarMenu/>
+            <FormAddClass/>
             <Footer/>
         </>
 	)
 }
 
-export default StaffMain
+export default StaffAddClass

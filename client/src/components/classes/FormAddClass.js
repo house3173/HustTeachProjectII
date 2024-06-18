@@ -36,7 +36,8 @@ const FormAddClass = () => {
             classRequireGender: '',
             classRequireExper: ''
         },
-        // parentsId: 'PH001',
+        parentsId: '',
+        parentsPhone: '',
         tutorId: '',
         staffId: '',
         classPercentFee: '30',
@@ -53,14 +54,14 @@ const FormAddClass = () => {
             studentGoal: '',
             studentAddInfo: '',
         },
+        addBy: 'PH'
     };
 
     let currentClass = JSON.parse(localStorage.getItem('selectedClass'))
+    const actorState = JSON.parse(localStorage.getItem('actorState'))
     
     const [formData, setFormData] = useState(initFormData);
-
     const [classFeeStr, setClassFeeStr] = useState('');
-
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -69,12 +70,12 @@ const FormAddClass = () => {
     const [subjects, setSubjects] = useState(['Math', 'Physics', 'Chemistry', 'Biology', 'English']);
     const [subjectFees, setSubjectFees] = useState([]);
     const [subjectFeesTutor, setSubjectFeesTutor] = useState([]);
+    const [listParents, setListParents] = useState([])
 
     const grades = ['Lớp 1', 'Lớp 2', 'Lớp 3', 'Lớp 4', 'Lớp 5', 'Lớp 6', 'Lớp 7', 'Lớp 8', 'Lớp 9', 'Lớp 10', 'Lớp 11', 'Lớp 12'];
     const districts = ['Thanh Xuân', 'Cầu Giấy', 'Đống Đa', 'Hai Bà Trưng', 'Hà Đông', 'Hoàn Kiếm', 'Ba Đình', 'Tây Hồ', 'Long Biên'];
 
     useEffect(() => {
-
         axios.get(`${apiUrl}/subject/getAll`)
             .then(response => {
                 if(response.data.success) {
@@ -87,7 +88,21 @@ const FormAddClass = () => {
             .catch(error => {
                 console.error('Error fetching subjects:', error);
             });
-
+        
+        if(actorState === 'staffMainHome') {
+            axios.get(`${apiUrl}/parents/getAll`)
+                .then(response => {
+                    if(response.data.success) {
+                        const listParentsInfo = response.data.parentsList.map(parents => 
+                            ({"parentsId" : parents.parentsId, "parentsName" : parents.parentsName}));
+                        setListParents(listParentsInfo)
+                        console.log(listParents)
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching subjects:', error);
+                });
+        }
     }, []);
 
     useEffect(() => {}, [currentClass])
@@ -197,10 +212,21 @@ const FormAddClass = () => {
         e.preventDefault();
         console.log(formData);
         const currentParents = JSON.parse(localStorage.getItem('currentParents'));
-        const classData = {
-            ...formData,
-            'parentsId': currentParents.parentsId
+        const currentStaff = JSON.parse(localStorage.getItem('currentStaff'));
+        let classData
+        if(actorState === 'staffMainHome') {
+            classData = {
+                ...formData,
+                'staffId': currentStaff.staffId,
+                'addBy': 'NV'
+            }
+        } else if (actorState === 'parentsMainHome') {
+            classData = {
+                ...formData,
+                'parentsId': currentParents.parentsId
+            }
         }
+        
         try {
             const response = await axios.post(`${apiUrl}/classes/addClass`, classData);
             currentClass = response.data.newClass;
@@ -221,6 +247,40 @@ const FormAddClass = () => {
                         <div className="mb-20">
                             <span className="listclass-title" style={{fontSize: '24px'}}>Thêm lớp học mới</span>
                         </div>
+                        
+                        <p><b>Thông tin phụ huynh</b></p>
+                        {(actorState === 'staffMainHome') &&
+                        <Row className="mt-3 mb-3">
+                                {/* 1 */}
+                                <Col>
+                                    <Form.Select 
+                                        name="parentsId"
+                                        value={formData.parentsId}
+                                        onChange={handleChange}
+                                        required
+                                        placeholder='Chọn phụ huynh'
+                                    >
+                                        <option value="Chọn phụ huynh">Chọn phụ huynh</option>
+                                        {listParents.map((parents, index) => (
+                                            <option key={index} value={parents.parentsId}>{`${parents.parentsId} - ${parents.parentsName}`}</option>
+                                        ))}
+                                    </Form.Select>
+                                </Col>
+                        </Row>
+                        }
+                        <Row className="mt-3 mb-3">
+                                <Col>
+                                    <Form.Control 
+                                        type="text" 
+                                        placeholder="Số điện thoại liên hệ" 
+                                        name="parentsPhone"
+                                        value={formData.parentsPhone}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </Col>
+                        </Row>
+    
                         <p><b>Thông tin lớp học</b></p>
                         <Row className="mt-3">
                             {/* 1 */}

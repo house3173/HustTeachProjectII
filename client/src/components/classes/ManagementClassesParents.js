@@ -216,10 +216,6 @@ const ManagementClassesParents = (parentsId) => {
                         <p style={{ color: '#FFC000' }}>{`Tình trạng: Đang tìm gia sư`}</p>
                         <ClassInfoCard selectedClass={selectedItemClass} type={"hybrid"}/>
 
-                        <div className='mt-20'>
-                            <img src={teach} alt='subject' width="20px" height="20px" className='mr-10'></img>
-                            <span><strong>Danh sách gia sư đăng ký</strong></span>
-                        </div>
 
                         <ManageFindingClass currentClass={selectedItemClass} controlChild={controlChild} reRenderParents={handleControlChild}/>
                     </div>

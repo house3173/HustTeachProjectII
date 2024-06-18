@@ -108,3 +108,19 @@ Content-Type: application/json
     "nodeGrade": "9",
     "nodeResponse": "Gia su nhiet tinh, on ap"
 }
+
+
+###
+POST  http://localhost:5000/api/staff/login
+Content-Type: application/json
+
+{
+    "staffId": "NV24134",
+    "staffPassword": "nhanvien"
+}
+
+###
+GET http://localhost:5000/api/parents/getAll
+
+###
+GET http://localhost:5000/api/classes/getAllByStaff/NV24134

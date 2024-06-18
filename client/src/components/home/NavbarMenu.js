@@ -74,6 +74,26 @@ const NavbarMenu = () => {
         )
     }
 
+    if(currentRoleActor === 'staffLogin' || currentRoleActor === 'staffMainHome') {
+
+        const disabled = (currentRoleActor === 'staffLogin') ? true : false
+        navbarMenu = (
+            <Navbar expand="lg" className="bg-body-tertiary" style={{borderBottom: "0.5px solid #646464"}}>
+                <Container>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="me-auto">
+                        <Nav.Link href="/staff31072003/trang-chu" disabled={disabled}  className="navbarmenu-item">Trang chủ</Nav.Link>
+                        <Nav.Link href="/staff31072003/quan-ly-lop" disabled={disabled}  className="navbarmenu-item">Quản lý lớp</Nav.Link>
+                        <Nav.Link href="/staff31072003/them-lop-moi" disabled={disabled}  className="navbarmenu-item">Thêm lớp mới</Nav.Link>
+                        <Nav.Link href="/staff31072003/thong-ke" disabled={disabled}  className="navbarmenu-item">Thống kê</Nav.Link>
+                    </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+        )
+    }
+
     return (
         <div>
             {navbarMenu}

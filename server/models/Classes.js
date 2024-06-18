@@ -67,6 +67,9 @@ const ClassSchema = new Schema({
         type: String,
         required: true
     },
+    parentsPhone: {
+        type: String,
+    },
     classPercentFee: {
         type: String,
     },
@@ -103,6 +106,10 @@ const ClassSchema = new Schema({
             type: String,
         },
     },
+    addBy: {
+        type: String,
+        required: true
+    }
 });
 
 module.exports = mongoose.model('classes', ClassSchema);

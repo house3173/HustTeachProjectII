@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react"
 import { Container, Modal, Button, Table, Col, Row, ProgressBar, Form, FloatingLabel } from "react-bootstrap"
 import axios from "axios"
+import teach from '../../assets/images/innovation.png'
 
 import { apiUrl } from "../../contexts/constants"
 
 const ManageFindingClass = ({currentClass, controlChild, reRenderParents}) => {
+    const actorState = JSON.parse(localStorage.getItem('actorState'));
+
     const listAchi = [
         { id: 1, label: 'Có môn đạt 9 điểm trở lên khi thi Đại học' },
         { id: 2, label: 'Cấp 3 theo học trường chuyên' },
@@ -130,13 +133,19 @@ const ManageFindingClass = ({currentClass, controlChild, reRenderParents}) => {
     return (
         <Container>
             <div className="mt-20">
+                <div className='mt-20 mb-20'>
+                            <img src={teach} alt='subject' width="20px" height="20px" className='mr-10'></img>
+                            <span><strong>Danh sách gia sư đăng ký</strong></span>
+                </div>
                 <Table striped bordered hover>
                     <thead>
                         <tr>
                             <th>Tên gia sư</th>
                             <th className="center-th">Xem thông tin gia sư</th>
-                            <th className="center-th">Từ chối yêu cầu</th>
-                            <th className="center-th">Xác nhận gia sư</th>
+                            {(actorState === 'parentsMainHome' || (actorState === 'staffMainHome' && currentClass.addBy === 'NV')) &&
+                            <><th className="center-th">Từ chối yêu cầu</th>
+                            <th className="center-th">Xác nhận gia sư</th></>
+                            }
                         </tr>
                     </thead>
                     <tbody>
@@ -152,7 +161,8 @@ const ManageFindingClass = ({currentClass, controlChild, reRenderParents}) => {
                                         <strong>i</strong>
                                     </Button>
                                 </td>
-                                <td className="center-td">
+                                {(actorState === 'parentsMainHome' || (actorState === 'staffMainHome' && currentClass.addBy === 'NV')) &&
+                                <><td className="center-td">
                                     <Button
                                         variant="danger"
                                         style={{ borderRadius: '50%', marginRight: '10px' , padding: '4px 15px 10px 15px'}}
@@ -170,6 +180,7 @@ const ManageFindingClass = ({currentClass, controlChild, reRenderParents}) => {
                                         ✔
                                     </Button>
                                 </td>
+                                </>}
                             </tr>
                         ))}
                     </tbody>

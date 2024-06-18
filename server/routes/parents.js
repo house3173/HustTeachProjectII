@@ -70,6 +70,20 @@ router.post('/login', async (req, res) => {
     }
 })
 
+
+// @route POST api/parents/getAll
+// @desc getAll parents
+// @access Public
+router.get('/getAll', async (req, res) => {
+    try {
+        const parentsList = await Parents.find({});
+        res.json({success: true, parentsList})
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({success: false, message: 'Interval server error'});
+    }
+})
+
 router.get('/', (req,res) => res.send('PARENTS ROUTE'));
 
 module.exports = router

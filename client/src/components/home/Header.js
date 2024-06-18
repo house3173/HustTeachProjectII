@@ -127,10 +127,22 @@ const Header = ({roleHeader}) => {
             </div>
         )
     } else if(roleHeader === 'staffMainHome') {
+        const currentStaff = JSON.parse(localStorage.getItem('currentStaff'));
+
         groupButtonHeader = (
-            <div className='header-register-contact'> 
-                    <Button variant="warning" size="sm" className='header-button-register' href='/'><strong>Đăng xuất</strong></Button>
+            <div style={{display: 'flex', width: '55%', justifyContent: 'flex-end'}}> 
+                    <div style={{display: 'flex', alignItems: 'center', marginRight: '50px'}} >
+                        <img src={profile} alt="avatar" 
+                            style={{backgroundColor: "#646464", width: "36px", height: "36px", border: 'none', borderRadius: '50%'}} />
+                        <div><span className='ml-10 mr-10' style={{color: 'white', fontSize: '21px'}}><strong>{`Nhân viên ${currentStaff.staffName}`}</strong></span></div>
+                        <img src={down} alt='' width="20px" height="20px"/>
+                    </div>
+                    <Button variant="warning" size="sm" className='header-button-register' href='/staff31072003'><strong>Đăng xuất</strong></Button>
             </div>
+        )
+    } else if(roleHeader === 'staffLogin') {
+        groupButtonHeader = (
+            <div style={{color: 'white', fontSize: '22px', fontWeight: '700'}}>Trang đăng nhập của nhân viên</div>
         )
     }
 
