@@ -24,9 +24,10 @@ router.get('/getAllByClassId/:classId', async (req, res) => {
 // @access Public
 router.post('/addNodeClass', async (req, res) => {
     const formData = req.body
+    console.log(formData)
 
     try {
-        const classCount = await NodeClass.countDocuments({classId: formData.classId});
+        const classCount = await NodeClass.countDocuments({});
         const nodeId = `N${String(classCount + 1).padStart(4, '0')}`;
 
         const nodeClass = {

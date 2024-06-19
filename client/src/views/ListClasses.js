@@ -46,22 +46,37 @@ const ListClasses = () => {
         },
 
     }
-
-    const tabList = {
-        title: "Danh sách lớp mới",
-        numberClass: 10,
-        type: "lớp mới",
-        href: "/danh-sach-lop-phu-hop",
-        hrefContent: "Xem danh sách lớp phù hợp"
-    }
     
     const [listClass, setListClass] = useState([])
+    const [filters, setFilters] = useState({
+        subjectChoose: [],
+        gradeChoose: [],
+        typeTutorChoose: [],
+        typeGenderChoose: [],
+        districtChoose: []
+    });
+
+    const handleApplyFilters = (newFilters) => {
+        setFilters(newFilters);
+        console.log("Filters in ListClass: ", newFilters)
+    }
+
+    useEffect(() => {
+        setFilters({
+            subjectChoose: [],
+            gradeChoose: [],
+            typeTutorChoose: [],
+            typeGenderChoose: [],
+            districtChoose: []
+        })
+    }, [])
+
     useEffect(() => {
 
-        axios.get(`${apiUrl}/classes/getAll`)
+        axios.post(`${apiUrl}/classes/filter`, filters)
             .then(response => {
                 if(response.data.success) {
-                    const filteredClasses = response.data.classes.filter(classItem => classItem.classStatus === 'Đang tìm gia sư');
+                    const filteredClasses = response.data.listClasses.filter(classItem => classItem.classStatus === 'Đang tìm gia sư');
                     setListClass(filteredClasses);
                 }
             })
@@ -69,7 +84,14 @@ const ListClasses = () => {
                 console.error('Error fetching subjects:', error);
             });
 
-    }, []);
+    }, [filters]); 
+
+    const tabList = {
+        title: "Danh sách lớp mới",
+        type: "lớp mới",
+        href: "/danh-sach-lop-phu-hop",
+        hrefContent: "Xem danh sách lớp phù hợp"
+    }
 
     // const listClass = Array(10).fill(oneClass);
 
@@ -78,9 +100,10 @@ const ListClasses = () => {
             {/* <Header roleHeader = 'mainHome'/> */}
             <Header roleHeader = {currentRoleActor}/>
             <NavbarMenu/>
-            <SearchArea tabList={tabList}/>
+            <SearchArea tabList={tabList} onApplyFilters={handleApplyFilters} />
             <Container>
                 <Row>
+                    <div><p><strong>{`Đang có ${listClass.length} lớp`}</strong></p></div>
                     {listClass.map((singleClass) => (
                         <Col key={singleClass.classId} xs={12} sm={6} lg={3} className="mt-20">
                             <SingleClass singleClass={singleClass} />

@@ -120,7 +120,7 @@ const ManageFindingClass = ({currentClass, controlChild, reRenderParents}) => {
             const response = await axios.post(`${apiUrl}/waitclass/confirmTutor`, confirmData);
             if(response.data.success) {
                 handleCloseModalAgree()
-                reRenderParents(!reRender)
+                // reRenderParents(!reRender)
                 setReRender(!reRender)
             } else {
                 
@@ -149,9 +149,9 @@ const ManageFindingClass = ({currentClass, controlChild, reRenderParents}) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {listTutorInfo.map((tutor) => (
+                        {listTutorInfo.map((tutor, index) => (
                             <tr key={tutor.tutorId}>
-                                <td>{`Gia sư ${tutor.tutorName}`}</td>
+                                <td style={{color: "white", backgroundColor: listWaitClass[index].status === "Xác nhận" ? "#00b050" : "#156082"}}>{`Gia sư ${tutor.tutorName}`}</td>
                                 <td className="center-td">
                                     <Button
                                         variant="warning"

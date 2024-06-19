@@ -22,6 +22,9 @@ const AccountManagement = () => {
     const [listClass, setListClass] = useState([])
     const [listWaitClass, setListWaitClass] = useState([])
     const [itemClassId, setItemClassId] = useState()
+    // const [reRender, setReRender] = useState(false)
+
+   
  
     useEffect(() => {
         const fetchClasses = async () => {
@@ -32,10 +35,13 @@ const AccountManagement = () => {
             ]);
     
             if (waitClassesResponse.data.success && tutorClassesResponse.data.success) {
+              console.log("Wait class:", waitClassesResponse.data.listWaitClasses);
+              console.log("Teach class:", tutorClassesResponse.data.tutorClasses);
               const combinedClasses = [
                 ...waitClassesResponse.data.listWaitClasses,
                 ...tutorClassesResponse.data.tutorClasses
               ];
+              
               setListClass(combinedClasses);
               setListWaitClass(waitClassesResponse.data.tutorWaitClasses);
               setItemClassId(combinedClasses[0].classId)
@@ -48,10 +54,12 @@ const AccountManagement = () => {
         fetchClasses();
     }, []);
 
-    const handleDetailClass = (classId) => {
+    const handleDetailClass = (selectedClass) => {
         setActiveTab('ManageClasses')
-        setItemClassId(classId)
-        console.log(classId);
+        setItemClassId(selectedClass.classId)
+        console.log(selectedClass.classId);
+        localStorage.setItem('selectedClass', JSON.stringify(selectedClass));
+
     }
 
     const renderContent = () => {
@@ -66,7 +74,7 @@ const AccountManagement = () => {
             
             const selectedItemClass = listClass.find(itemClass => itemClass.classId === itemClassId);
             console.log(selectedItemClass)
-            return <AMManageClasses selectedClass={selectedItemClass} listWaitClass={listWaitClass}/>;
+            return <AMManageClasses selectedClass={selectedItemClass} listWaitClass={listWaitClass} />;
         default:
           return <AMBasicInfo />;
       }
@@ -109,7 +117,7 @@ const AccountManagement = () => {
                                     <img src={play} alt="arrow right" className="image-css-16 ml-30 mr-10 mb-10"/>
                                     <span 
                                         className="span-css-blue-16" 
-                                        onClick={() => handleDetailClass(itemClass.classId)}
+                                        onClick={() => handleDetailClass(itemClass)}
                                     >
                                             {itemClass.classId}
                                     </span>

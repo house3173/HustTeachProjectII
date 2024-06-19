@@ -1,6 +1,4 @@
 import ClassInfoCard from "../classes/ClassInfoCard";
-import book from '../../assets/images/books.png'
-import location from '../../assets/images/location-black.png'
 import openbook from '../../assets/images/open-book.png'
 import { Button, Col, Container, Row, Form, FloatingLabel, Modal, ToastContainer, Toast, ProgressBar} from "react-bootstrap";
 import { useEffect, useState } from "react";
@@ -9,15 +7,11 @@ import { apiUrl } from "../../contexts/constants";
 import convertDate from "../../utils/convertDate";
 
 const AMManageClasses = ({selectedClass, listWaitClass}) => {
+    // const selectedClass = JSON.parse(localStorage.getItem('selectedClass'));
     const currentTutor = JSON.parse(localStorage.getItem('currentTutor'));
-
+    
+    const [selectedClassInfo, setSelectedClassInfo] = useState(selectedClass);
     const [selectedClassId, setSelectedClassId] = useState(selectedClass.classId)
-
-    useEffect(() => {
-        if (selectedClass.classId !== selectedClassId) {
-            setSelectedClassId(selectedClass.classId);
-        }
-    }, [selectedClass]);
 
     const [listNodeClass, setListNodeClass] = useState([])
     const [itemNodeId, setItemNodeId] = useState('')
@@ -28,14 +22,18 @@ const AMManageClasses = ({selectedClass, listWaitClass}) => {
 
     const [evaluteTutor, setEvaluteTutor] = useState('')
     const [addNodeData, setAddNodeData] = useState({
-        classId: selectedClass.classId,
+        classId: '',
         nodeDate: '',
         nodeTime: '',
         nodeTopic: '',
         nodeComment: ''
     });
 
+    const [render, setRender] = useState(false)
+
     const [showModalAddNode, setShowModalAddNode] = useState(false);
+    const [showModalAgree, setShowModalAgree] = useState(false);
+    const [showModalReject, setShowModalReject] = useState(false);
     const handleCloseModalAddNode = () => setShowModalAddNode(false);
     const handleOpenModalAddNode = () => setShowModalAddNode(true);
     
@@ -65,8 +63,17 @@ const AMManageClasses = ({selectedClass, listWaitClass}) => {
         }
         setErrorModal('')
 
+        console.log('Old add node data:', addNodeData)
+        console.log( 'selected add node class: ',selectedClass)
+        setAddNodeData({...addNodeData, classId: selectedClass.classId})
+        console.log('New add node data:', addNodeData)
+        const addNodeDataForm = {
+            ...addNodeData,
+            classId: selectedClass.classId
+        }
+        console.log('Node form data:', addNodeDataForm)
         try {
-            const response = await axios.post(`${apiUrl}/nodeclass/addNodeClass`, addNodeData);
+            const response = await axios.post(`${apiUrl}/nodeclass/addNodeClass`, addNodeDataForm );
             if(response.data.success) {
                 handleCloseModalAddNode();
                 setShowContentToast('Thêm ghi chú buổi học thành công.')
@@ -86,6 +93,44 @@ const AMManageClasses = ({selectedClass, listWaitClass}) => {
         console.log(addNodeData);
     };
 
+    const handleConfirmClass = async (e) => {
+        const confirmData = {
+            "tutorId": currentTutor.tutorId,
+            "classId": selectedClass.classId
+        }
+
+        try {
+            const response = await axios.post(`${apiUrl}/waitclass/confirmClass`, confirmData);
+            if(response.data.success) {
+                setShowModalAgree(false)
+                setRender(!render)
+            } else {
+                
+            }           
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleConfirmRejectClass = async (e) => {
+        const confirmData = {
+            "tutorId": currentTutor.tutorId,
+            "classId": selectedClass.classId
+        }
+
+        try {
+            const response = await axios.post(`${apiUrl}/waitclass/confirmRejectClass`, confirmData);
+            if(response.data.success) {
+                setShowModalReject(false)
+                setRender(!render)
+            } else {
+
+            }           
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         axios.get(`${apiUrl}/nodeclass/getAllByClassId/${selectedClass.classId}`)
             .then(response => {
@@ -98,7 +143,7 @@ const AMManageClasses = ({selectedClass, listWaitClass}) => {
             .catch(error => {
                 console.error('Error fetching subjects:', error);
             });
-    }, [selectedClassId, itemNodeId]);
+    }, [selectedClass, itemNodeId]);
 
 
     useEffect(() => {
@@ -114,6 +159,20 @@ const AMManageClasses = ({selectedClass, listWaitClass}) => {
                 });
         }
     }, [selectedClass])
+
+    useEffect(() => {
+            console.log('Load class info')
+            axios.get(`${apiUrl}/classes/getClassById/${selectedClass.classId}`)
+                .then(response => {
+                    if(response.data.success) {
+                        setSelectedClassInfo(response.data.classes)
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching subjects:', error);
+                });
+        
+    }, [render])
     
 
     // Lớp Đang ở trạng thái hoạt động --> có hai kiểu: Đang dạy hoặc Kết thúc
@@ -254,11 +313,11 @@ const AMManageClasses = ({selectedClass, listWaitClass}) => {
             ) 
 
     } else {
+        const selectedWaitClass = listWaitClass.find(itemClass => itemClass.classId === selectedClass.classId);
         // Lớp Đang ở trạng thái chờ xác nhận
-        if(selectedClass.classStatus === 'Đang tìm gia sư') {
+        if(selectedClass.classStatus === 'Đang tìm gia sư' && selectedWaitClass.status !== 'Từ chối') {
             console.log('Đang chờ xác nhận')
             console.log(selectedClass)
-            const classFeeStr =  selectedClass.classFee.map(fee => (fee*8000).toString() + ' đồng').join(' hoặc ')
 
             return (
                 <div>
@@ -267,13 +326,61 @@ const AMManageClasses = ({selectedClass, listWaitClass}) => {
                     </div>
 
                     <div style={{marginTop: '-1rem'}}>
-                        <p style={{ color: '#FFC000' }}>{`Tình trạng: Đang chờ`}</p>
+                        <p style={{ color: '#FFC000' }}>{`Tình trạng: ${selectedWaitClass.status}`}</p>
                         <ClassInfoCard selectedClass={selectedClass} type={"full"}/>
-                        <p><br></br>Yêu cầu của gia sư đang trong quá trình xử lý và chờ xác nhận, 
+                        {selectedWaitClass.status === "Đang chờ" && 
+                        <div>
+                            <p><br></br>Yêu cầu của gia sư đang trong quá trình xử lý và chờ xác nhận, 
                             xin quý gia sư chờ trong một khoảng thời gian. Bạn sẽ sớm nhận được thông báo. <br></br><br></br>
                             Cảm ơn quý gia sư vì đã tin tưởng trung tâm! <br></br>
                             Trân trọng!!!
-                        </p>
+                            </p>
+                        </div>
+                        }
+
+                        {selectedWaitClass.status === "Xác nhận" && 
+                        <div>
+                            <p><br></br>Yêu cầu của gia sư đã được phụ huynh xác nhận, 
+                            xin quý gia sư xác nhận bắt đầu lớp học bằng cách click vào nút phía dưới <br></br>
+                            Trân trọng!!!
+                            </p>
+                            <Button variant="primary" onClick={() => setShowModalAgree(true)}> Xác nhận </Button>
+                            <Button variant="danger" onClick={() => setShowModalReject(true)} className="ml-30"> Từ chối </Button>
+
+                            <Modal show={showModalAgree} onHide={() => setShowModalAgree(false)}>
+                                <Modal.Header closeButton>
+                                    {selectedClass &&
+                                        <Modal.Title>{`Xác nhận nhận lớp ${selectedClass.classId}`}</Modal.Title>
+                                    }
+                                </Modal.Header>
+                                <Modal.Body>
+                                    {selectedClass && 
+                                        <p><strong>{`Khi nhấn nút xác nhận, bạn đồng ý bắt đầu gia sư cho lớp học ${selectedClass.classId}`} </strong></p>
+                                    }
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="secondary" onClick={() => setShowModalAgree(false)}>Close</Button>
+                                    <Button variant="primary" onClick={handleConfirmClass}>Xác nhận</Button>
+                                </Modal.Footer>
+                            </Modal>
+                            <Modal show={showModalReject} onHide={() => setShowModalReject(false)}>
+                                <Modal.Header closeButton>
+                                    {selectedClass &&
+                                        <Modal.Title>{`Xác nhận từ chối lớp ${selectedClass.classId}`}</Modal.Title>
+                                    }
+                                </Modal.Header>
+                                <Modal.Body>
+                                    {selectedClass && 
+                                        <p><strong>{`Khi nhấn nút xác nhận, bạn xác nhận từ chối gia sư cho lớp ${selectedClass.classId}`} </strong></p>
+                                    }
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="secondary" onClick={() => setShowModalReject(false)}>Close</Button>
+                                    <Button variant="primary" onClick={handleConfirmRejectClass}>Xác nhận</Button>
+                                </Modal.Footer>
+                            </Modal>
+                        </div>
+                        }
                     </div>
                 </div>
             )
@@ -281,7 +388,6 @@ const AMManageClasses = ({selectedClass, listWaitClass}) => {
         // Lớp Đang ở trạng thái bị từ chối lớp
         else {
             console.log(listWaitClass)
-            const selectedWaitClass = listWaitClass.find(itemClass => itemClass.classId === selectedClass.classId);
 
             return (
                 <div>

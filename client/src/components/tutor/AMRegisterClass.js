@@ -27,7 +27,6 @@ const AMRegisterClass = () => {
     const grades = ['Lớp 1', 'Lớp 2', 'Lớp 3', 'Lớp 4', 'Lớp 5', 'Lớp 6', 'Lớp 7', 'Lớp 8', 'Lớp 9', 'Lớp 10', 'Lớp 11', 'Lớp 12'];
     
         useEffect(() => {
-
             // Fetch subjects from your API
             axios.get(`${apiUrl}/subject/getAll`)
                 .then(response => {
@@ -39,16 +38,6 @@ const AMRegisterClass = () => {
                 .catch(error => {
                     console.error('Error fetching subjects:', error);
                 });
-    
-            // // Fetch districts from Hanoi API
-            // axios.get('https://api.example.com/hanoi-districts') // Thay URL này bằng URL thực tế của API
-            //     .then(response => {
-            //         setDistricts(response.data);
-            //     })
-            //     .catch(error => {
-            //         console.error('Error fetching districts:', error);
-            //     });
-
         }, []);
 
         useEffect(() => {
@@ -58,21 +47,17 @@ const AMRegisterClass = () => {
                 .then(response => {
                     if(response.data.success) {
                       const tutorSuitable = response.data.existingTutorSuitable;
-                      const subjectsCopy = response.data.subjects.map(subject => subject.subjectName);
-                      const listSubjects = subjectsCopy.filter((subject, index) => tutorSuitable.tutorListSubject[index] === '1');
-                      const listGrades = grades.filter((grade, index) => tutorSuitable.tutorListGrade[index] === '1');
-                      const listDistricts = districts.filter((district, index) => tutorSuitable.tutorListDistrict[index] === '1');
                       
                       console.log({
-                        subjects: listSubjects,
-                        grades: listGrades,
-                        districts: listDistricts,
+                        subjects: tutorSuitable.tutorListSubject,
+                        grades: tutorSuitable.tutorListGrade,
+                        districts: tutorSuitable.tutorListDistrict,
                       })
 
                       setFormData({
-                        subjects: listSubjects,
-                        grades: listGrades,
-                        districts: listDistricts,
+                        subjects: tutorSuitable.tutorListSubject,
+                        grades: tutorSuitable.tutorListGrade,
+                        districts: tutorSuitable.tutorListDistrict,
                       })
                     }
                 })
@@ -94,15 +79,15 @@ const AMRegisterClass = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault()
 
-    const tutorListSubject = subjects.map(subject => formData.subjects.includes(subject) ? '1' : '0').join('');
-    const tutorListGrade = grades.map(grade => formData.grades.includes(grade) ? '1' : '0').join('');
-    const tutorListDistrict = districts.map(district => formData.districts.includes(district) ? '1' : '0').join('');
+    // const tutorListSubject = subjects.map(subject => formData.subjects.includes(subject) ? '1' : '0').join('');
+    // const tutorListGrade = grades.map(grade => formData.grades.includes(grade) ? '1' : '0').join('');
+    // const tutorListDistrict = districts.map(district => formData.districts.includes(district) ? '1' : '0').join('');
     console.log(formData);
     
     const tutorSuitable = {
-      tutorListSubject: tutorListSubject,
-      tutorListGrade: tutorListGrade,
-      tutorListDistrict: tutorListDistrict
+      tutorListSubject: formData.subjects,
+      tutorListGrade: formData.grades,
+      tutorListDistrict: formData.districts
     }
 
     console.log(tutorSuitable)

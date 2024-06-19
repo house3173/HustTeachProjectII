@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 const Classes = require('../models/Classes')
+const Subject = require('../models/Subject')
+const Tutor = require('../models/Tutor')
+const TutorSuitable = require('../models/tutorManagement/TutorSuitable')
 
 // @route GET api/classes/getAll
 // @desc get all subjects
@@ -25,6 +28,22 @@ router.get('/getAll/:parentsId', async (req, res) => {
     try {
         const parentsClasses = await Classes.find({ parentsId: parentsId });
         res.json({success: true, parentsId, parentsClasses});
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({success: false, message: "Interval server error"})
+    }
+})
+
+// @route GET api/classes/getClassById
+// @desc get all subjects
+// @access Public
+router.get('/getClassById/:classId', async (req, res) => {
+    const classId = req.params.classId
+    try {
+        const classes = await Classes.findOne({ classId: classId });
+        if(classes) {
+            res.json({success: true, classes});
+        }
     } catch (err) {
         console.error(err.message);
         res.status(500).json({success: false, message: "Interval server error"})
@@ -127,6 +146,84 @@ router.post('/updateClass', async (req, res) => {
         return res.status(500).json({ success: false, message: 'Internal server error' });
     }
 });
+
+// @route POST api/classes/filter/
+// @desc get filtered classes
+// @access Public
+router.post('/filter', async (req, res) => {
+    const { subjectChoose, gradeChoose, typeTutorChoose, typeGenderChoose, districtChoose } = req.body;
+
+    try {
+        let modifiedTypeTutorChoose = typeTutorChoose;
+        if (typeTutorChoose && typeTutorChoose.includes("Cả hai")) {
+            modifiedTypeTutorChoose = ["Sinh viên", "Giáo viên", "Cả hai"];
+        }
+        let modifiedTypeGenderChoose = typeGenderChoose;
+        if (typeGenderChoose && typeGenderChoose.includes("Cả hai")) {
+            modifiedTypeGenderChoose = ["Nam", "Nữ", "Cả hai"];
+        }
+        // Xây dựng đối tượng query cho MongoDB
+        let query = {};
+
+        if (subjectChoose && subjectChoose.length > 0) {
+            query.classSubject = { $in: subjectChoose };
+        }
+
+        if (gradeChoose && gradeChoose.length > 0) {
+            query.classGrade = { $in: gradeChoose };
+        }
+
+        if (modifiedTypeTutorChoose && modifiedTypeTutorChoose.length > 0) {
+            query["classRequireDetail.classRequireTypeTutor"] = { $in: modifiedTypeTutorChoose };
+        }
+
+        if (modifiedTypeGenderChoose && modifiedTypeGenderChoose.length > 0) {
+            query["classRequireDetail.classRequireGender"] = { $in: modifiedTypeGenderChoose };
+        }
+
+        if (districtChoose && districtChoose.length > 0) {
+            query["classAddress.addressDistrict"] = { $in: districtChoose };
+        }
+
+        const listClasses = await Classes.find(query);
+        res.json({ success: true, listClasses });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ success: false, message: "Internal server error" });
+    }
+});
+
+// @route POST api/classes/suitableClass/tutorId
+// @desc get filtered classes
+// @access Public
+router.get('/suitableClass/:tutorId', async (req, res) => {
+    const tutorId = req.params.tutorId;
+
+    try {
+        // Lấy đối tượng TutorSuitable với tutorId
+        const tutorSuitable = await TutorSuitable.findOne({ tutorId });
+
+        if (!tutorSuitable) {
+            return res.status(404).json({ success: false, message: 'Tutor suitable not found' });
+        }
+
+        const { tutorListSubject, tutorListGrade, tutorListDistrict } = tutorSuitable;
+
+        // Lấy các lớp từ bảng Classes
+        const suitableClasses = await Classes.find({
+            classStatus: 'Đang tìm gia sư',
+            classSubject: { $in: tutorListSubject },
+            classGrade: { $in: tutorListGrade },
+            'classAddress.addressDistrict': { $in: tutorListDistrict }
+        });
+
+        res.json({ success: true, suitableClasses });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
 
 
 router.get('/test', async (req, res) => {

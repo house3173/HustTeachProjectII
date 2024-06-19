@@ -124,3 +124,25 @@ GET http://localhost:5000/api/parents/getAll
 
 ###
 GET http://localhost:5000/api/classes/getAllByStaff/NV24134
+
+
+###
+POST http://localhost:5000/api/classes/updateClass
+Content-Type: application/json
+
+{
+    "classId": "L0003",
+    "classStatus": "Đang xử lý"
+}
+
+### 
+POST http://localhost:5000/api/classes/filter
+Content-Type: application/json
+
+{
+    "districtChoose": ["Thanh Xuân", "Hai Bà Trưng", "Ba Đình", "Tây Hồ"],
+    "gradeChoose": ["Lớp 5", "Lớp 7", "Lớp 10", "Lớp 2"], 
+    "subjectChoose": ["Toán học", "Hóa học ", "Sinh học "], 
+    "typeGenderChoose": ["Nam"],
+    "typeTutorChoose": ["Giáo viên"]
+}

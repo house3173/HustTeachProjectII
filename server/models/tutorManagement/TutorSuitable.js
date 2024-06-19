@@ -8,16 +8,13 @@ const TutorSuitableSchema = new Schema({
         unique: true
     },
     tutorListSubject: {
-        type: String,
-        required: true
+        type: Array
     },
     tutorListGrade: {
-        type: String,
-        required: true,
+        type: Array
     }, 
     tutorListDistrict: {
-        type: String,
-        required: true,
+        type: Array
     }
 })
 

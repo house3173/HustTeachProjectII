@@ -40,7 +40,7 @@ router.post('/registerClass', async (req, res) => {
 router.get('/getAll/:tutorId', async (req, res) => {
     const tutorId = req.params.tutorId
     try {
-        const tutorWaitClasses = await WaitRegisterClass.find({ tutorId: tutorId, status: { $ne: "Xác nhận" } });
+        const tutorWaitClasses = await WaitRegisterClass.find({ tutorId: tutorId, status: { $ne: "Đang dạy" } });
         
         let listWaitClasses = [];
 
@@ -63,7 +63,7 @@ router.get('/getAll/:tutorId', async (req, res) => {
 router.get('/getAllByClassId/:classId', async (req, res) => {
     const classId = req.params.classId
     try {
-        const tutorWaitClasses = await WaitRegisterClass.find({ classId: classId, status: "Đang chờ" });
+        const tutorWaitClasses = await WaitRegisterClass.find({ classId: classId, status: { $in: ["Đang chờ", "Xác nhận"] }  });
         
         let tutorWaitInfo = [];
         let tutorWaitAchi = [];
@@ -109,13 +109,57 @@ router.post('/confirmTutor', async (req, res) => {
     const {tutorId, classId} = req.body
 
     try {
-        const listWaitClass = await WaitRegisterClass.find({ classId: classId, status: 'Đang chờ' });
+      
+        const waitClass = await WaitRegisterClass.findOne({ classId: classId, tutorId: tutorId });
+
+        if(waitClass) {
+            await WaitRegisterClass.findByIdAndUpdate(waitClass._id, { status: "Xác nhận" });
+        }
+
+        res.json({success: true})
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({success: false, message: 'Interval server error'});
+    }
+})
+
+// @route POST api/waitclass/confirmRejectClass
+// @desc Add new wait register  class
+// @access Public
+router.post('/confirmRejectClass', async (req, res) => {
+    const {tutorId, classId} = req.body
+
+    try {
+
+        const waitClass = await WaitRegisterClass.findOne({ classId: classId, tutorId: tutorId });
+
+        if(waitClass) {
+            await WaitRegisterClass.findByIdAndUpdate(waitClass._id, { status: "Từ chối" });
+        }
+
+        res.json({success: true})
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({success: false, message: 'Interval server error'});
+    }
+})
+
+// @route POST api/waitclass/confirmClass
+// @desc Add new wait register  class
+// @access Public
+router.post('/confirmClass', async (req, res) => {
+    const {tutorId, classId} = req.body
+
+    try {
+        const listWaitClass = await WaitRegisterClass.find({ classId: classId, status: { $in: ["Đang chờ", "Xác nhận"] }  });
 
         if(listWaitClass.length !== 0) {
             for (let waitClass of listWaitClass) {
                 if (waitClass.tutorId === tutorId) {
                     await Classes.updateOne({classId: classId}, { classStatus: "Đang dạy", tutorId: tutorId });
-                    await WaitRegisterClass.findByIdAndUpdate(waitClass._id, { status: "Xác nhận" });
+                    await WaitRegisterClass.findByIdAndUpdate(waitClass._id, { status: "Đang dạy" });
                 } else {
                     await WaitRegisterClass.findByIdAndUpdate(waitClass._id, { status: "Từ chối", reason: "Phụ huynh đã tìm được gia sư phù hợp" });
                 }
