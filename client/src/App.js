@@ -25,6 +25,12 @@ import StaffLogin from './views/staffView/StaffLogin';
 import StaffManageClass from './views/staffView/StaffManageClass';
 import StaffAddClass from './views/staffView/StaffAddClass';
 import StaffStatistic from './views/staffView/StaffStatistic';
+import AdminLogin from './views/adminView/AdminLogin'
+import AdminMain from './views/adminView/AdminMain'
+import AdminManageClass from './views/adminView/AdminManageClass';
+import AdminManageStaff from './views/adminView/AdminManageStaff';
+import AdminManageTutor from './views/adminView/AdminManageTutor';
+import AdminManageParents from './views/adminView/AdminManageParents';
 
 function App() {
 
@@ -39,7 +45,12 @@ function App() {
           <ClassContextProvider>
             <Router>
               <Routes>
-                <Route path="/" element={<><a href='/trang-chu'>Home page</a><br></br><a href='/staff31072003'>Staff page</a></>} />
+                <Route path="/" element={
+                  <>
+                    <a href='/trang-chu'>Home page</a><br></br>
+                    <a href='/staff31072003'>Staff page</a><br></br>
+                    <a href='/admin31072003'>Admin page</a>
+                  </>} />
                 <Route path="/trang-chu" element={<Home/>} />
                 <Route path="/dang-ky" element={<Register/>} />
                 <Route path="/dang-nhap" element={<Login/>} />
@@ -63,6 +74,15 @@ function App() {
                 <Route path='/staff31072003/them-lop-moi' element={<StaffAddClass />}/> 
                 <Route path='/staff31072003/thong-ke' element={<StaffStatistic />}/> 
                 <Route path='/staff31072003' element={<StaffLogin />}/> 
+
+                {/* View and route Admin (Admin) */}
+                <Route path='/admin31072003/trang-chu' element={<AdminMain />}/> 
+                <Route path='/admin31072003/quan-ly-lop' element={<AdminManageClass />}/> 
+                <Route path='/admin31072003/quan-ly-nhan-vien' element={<AdminManageStaff />}/> 
+                <Route path='/admin31072003/quan-ly-gia-su' element={<AdminManageTutor />}/> 
+                <Route path='/admin31072003/quan-ly-phu-huynh' element={<AdminManageParents />}/> 
+                <Route path='/admin31072003/thong-ke' element={<StaffStatistic />}/> 
+                <Route path='/admin31072003' element={<AdminLogin />}/> 
                 
 
                 {/* <Route path="/login" element={<Auth authRoute="login" />} />

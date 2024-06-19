@@ -84,6 +84,21 @@ router.get('/getAll', async (req, res) => {
     }
 })
 
+// @route GET api/tutor/getTutor
+// @desc get all subjects
+// @access Public
+router.post('/deleteParents/:parentsId', async (req, res) => {
+    const parentsId = req.params.parentsId
+    try {
+        const deletedTutor1 = await Parents.findOneAndDelete({ parentsId: parentsId });
+      
+        res.json({success: true});
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({success: false, message: "Interval server error"})
+    }
+})
+
 router.get('/', (req,res) => res.send('PARENTS ROUTE'));
 
 module.exports = router

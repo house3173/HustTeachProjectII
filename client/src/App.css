@@ -256,4 +256,15 @@
   text-align:  center;
 }
 
+.center-th-xy {
+  text-align: center;
+  vertical-align: middle !important;
+}
+
+.select-table {
+  padding: 3px;
+  border: 2px solid #00b050;
+  border-radius: 5px;
+}
+
 

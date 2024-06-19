@@ -146,3 +146,6 @@ Content-Type: application/json
     "typeGenderChoose": ["Nam"],
     "typeTutorChoose": ["Giáo viên"]
 }
+
+###
+GET http://localhost:5000/api/classes/suitableClass/GS0001

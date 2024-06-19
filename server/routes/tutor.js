@@ -5,6 +5,7 @@ const Tutor = require('../models/Tutor');
 const TutorInfo = require('../models/tutorManagement/TutorInfo');
 const TutorAchi = require('../models/tutorManagement/TutorAchi');
 const TutorSuitable = require('../models/tutorManagement/TutorSuitable')
+const WaitRegisterClass = require('../models/tutorManagement/WaitRegisterClass')
 const Subject = require('../models/Subject');
 
 
@@ -231,6 +232,39 @@ router.get('/getAll', async (req, res) => {
     try {
         const tutorList = await Tutor.find();
         res.json({success: true, tutorList});
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({success: false, message: "Interval server error"})
+    }
+})
+
+
+// @route GET api/tutor/getTutor
+// @desc get all subjects
+// @access Public
+router.get('/getTutor/:tutorId', async (req, res) => {
+    const tutorId = req.params.tutorId
+    try {
+        const selectedTutor = await TutorInfo.findOne({tutorId: tutorId});
+        res.json({success: true, selectedTutor});
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({success: false, message: "Interval server error"})
+    }
+})
+
+// @route GET api/tutor/getTutor
+// @desc get all subjects
+// @access Public
+router.post('/deleteTutor/:tutorId', async (req, res) => {
+    const tutorId = req.params.tutorId
+    try {
+        const deletedTutor1 = await Tutor.findOneAndDelete({ tutorId: tutorId });
+        const deletedTutor2 = await TutorInfo.findOneAndDelete({ tutorId: tutorId });
+        const deletedTutor3 = await TutorAchi.findOneAndDelete({ tutorId: tutorId });
+        const deletedTutor4 = await TutorSuitable.findOneAndDelete({ tutorId: tutorId });
+        const deletedTutor5 = await WaitRegisterClass.deleteMany({ tutorId: tutorId });
+        res.json({success: true});
     } catch (err) {
         console.error(err.message);
         res.status(500).json({success: false, message: "Interval server error"})

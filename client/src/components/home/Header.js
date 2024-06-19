@@ -144,6 +144,24 @@ const Header = ({roleHeader}) => {
         groupButtonHeader = (
             <div style={{color: 'white', fontSize: '22px', fontWeight: '700'}}>Trang đăng nhập của nhân viên</div>
         )
+    } else if(roleHeader === 'adminMainHome') {
+        const currentAdmin = JSON.parse(localStorage.getItem('currentAdmin'));
+
+        groupButtonHeader = (
+            <div style={{display: 'flex', width: '55%', justifyContent: 'flex-end'}}> 
+                    <div style={{display: 'flex', alignItems: 'center', marginRight: '50px'}} >
+                        <img src={profile} alt="avatar" 
+                            style={{backgroundColor: "#646464", width: "36px", height: "36px", border: 'none', borderRadius: '50%'}} />
+                        <div><span className='ml-10 mr-10' style={{color: 'white', fontSize: '21px'}}><strong>{`Admin ${currentAdmin.adminName}`}</strong></span></div>
+                        <img src={down} alt='' width="20px" height="20px"/>
+                    </div>
+                    <Button variant="warning" size="sm" className='header-button-register' href='/admin31072003'><strong>Đăng xuất</strong></Button>
+            </div>
+        )
+    } else if(roleHeader === 'adminLogin') {
+        groupButtonHeader = (
+            <div style={{color: 'white', fontSize: '22px', fontWeight: '700'}}>Trang đăng nhập dành cho admin</div>
+        )
     }
 
 

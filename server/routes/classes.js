@@ -34,6 +34,20 @@ router.get('/getAll/:parentsId', async (req, res) => {
     }
 })
 
+// @route GET api/classes/getAll
+// @desc get all subjects
+// @access Public
+router.get('/getAllByParents/:parentsId', async (req, res) => {
+    const parentsId = req.params.parentsId
+    try {
+        const parentsClasses = await Classes.find({ parentsId: parentsId, classStatus: "Đang dạy"});
+        res.json({success: true, parentsId, parentsClasses});
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({success: false, message: "Interval server error"})
+    }
+})
+
 // @route GET api/classes/getClassById
 // @desc get all subjects
 // @access Public

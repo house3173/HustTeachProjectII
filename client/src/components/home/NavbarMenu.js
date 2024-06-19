@@ -94,6 +94,28 @@ const NavbarMenu = () => {
         )
     }
 
+    if(currentRoleActor === 'adminLogin' || currentRoleActor === 'adminMainHome') {
+
+        const disabled = (currentRoleActor === 'adminLogin') ? true : false
+        navbarMenu = (
+            <Navbar expand="lg" className="bg-body-tertiary" style={{borderBottom: "0.5px solid #646464"}}>
+                <Container>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="me-auto">
+                        <Nav.Link href="/admin31072003/trang-chu" disabled={disabled}  className="navbarmenu-item">Trang chủ</Nav.Link>
+                        <Nav.Link href="/admin31072003/quan-ly-lop" disabled={disabled}  className="navbarmenu-item">Quản lý lớp</Nav.Link>
+                        <Nav.Link href="/admin31072003/quan-ly-nhan-vien" disabled={disabled}  className="navbarmenu-item">Quản lý nhân viên</Nav.Link>
+                        <Nav.Link href="/admin31072003/quan-ly-gia-su" disabled={disabled}  className="navbarmenu-item">Quản lý gia sư</Nav.Link>
+                        <Nav.Link href="/admin31072003/quan-ly-phu-huynh" disabled={disabled}  className="navbarmenu-item">Quản lý phụ huynh</Nav.Link>
+                        <Nav.Link href="/admin31072003/thong-ke" disabled={disabled}  className="navbarmenu-item">Thống kê</Nav.Link>
+                    </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+        )
+    }
+
     return (
         <div>
             {navbarMenu}

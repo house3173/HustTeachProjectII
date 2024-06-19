@@ -14,6 +14,7 @@ const waitRegisterClassRouter = require('./routes/waitclass')
 const nodeClassRouter = require('./routes/nodeclass')
 const evaluteTutorRouter = require('./routes/evalutetutor')
 const staffRouter = require('./routes/staff')
+const adminRouter = require('./routes/admin')
 
 const connectDB = async () => {
     try {
@@ -45,6 +46,7 @@ app.use('/api/waitclass', waitRegisterClassRouter);
 app.use('/api/nodeclass', nodeClassRouter);
 app.use('/api/evalutetutor', evaluteTutorRouter);
 app.use('/api/staff', staffRouter);
+app.use('/api/admin', adminRouter);
 // app.use('/api/posts', postRouter);
 
 app.get('/', (req,res) => res.send('Hello world!'));

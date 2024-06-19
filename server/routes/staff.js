@@ -32,6 +32,36 @@ router.post('/login', async (req, res) => {
     }
 })
 
+// @route GET api/staff/getAll
+// @desc get all subjects
+// @access Public
+router.get('/getAll', async (req, res) => {
+    try {
+        const staffList = await Staff.find();
+        res.json({success: true, staffList});
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({success: false, message: "Interval server error"})
+    }
+})
+
+// @route GET api/staff/create
+// @desc get all subjects
+// @access Public
+router.post('/create', async (req, res) => {
+    const staffData = req.body
+
+    try {
+        const newStaff = new Staff(staffData);
+        await newStaff.save()
+        return res.status(200).json({success: true, message: 'New class created sucessfully', newStaff});
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({success: false, message: "Interval server error"})
+    }
+})
+
 router.get('/', (req,res) => res.send('STAFF ROUTE'));
 
 module.exports = router
