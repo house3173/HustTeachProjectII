@@ -16,7 +16,7 @@ router.post('/addEvalute', async (req, res) => {
 
         if (existEvalute) {
             await EvaluteTutor.updateOne({ classId: evaluteData.classId }, evaluteData);
-            return res.status(200).json({ success: true, message: 'Evalute tutor is updated successfully', evaluteData});
+            return res.status(200).json({ success: true, message: 'Evalute tutor is updated successfully!', evaluteData});
         } else {
             const newEvaluteTutor = new EvaluteTutor(evaluteData);
             await newEvaluteTutor.save();

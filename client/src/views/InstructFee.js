@@ -4,8 +4,9 @@ import Introduce from '../components/home/Introduce'
 import Footer from '../components/home/Footer'
 import {useContext, useEffect } from 'react'
 import { ActorContext } from '../contexts/actorContext'
+import Instruct from '../components/home/Instruct'
 
-const Home = () => {
+const InstructFee = () => {
     const {actorState, dispatch} = useContext(ActorContext)
     console.log(actorState.actor)
     const currentRoleActor = JSON.parse(localStorage.getItem('actorState'));
@@ -19,10 +20,10 @@ const Home = () => {
         <>
             <Header roleHeader = {currentRoleActorNew}/>
             <NavbarMenu/>
-            <Introduce roleData={currentRoleActorNew}/>
+            <Instruct />
             <Footer/>
         </>
 	)
 }
 
-export default Home
+export default InstructFee

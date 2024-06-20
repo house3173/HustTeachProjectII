@@ -31,6 +31,7 @@ import AdminManageClass from './views/adminView/AdminManageClass';
 import AdminManageStaff from './views/adminView/AdminManageStaff';
 import AdminManageTutor from './views/adminView/AdminManageTutor';
 import AdminManageParents from './views/adminView/AdminManageParents';
+import InstructFee from './views/InstructFee';
 
 function App() {
 
@@ -55,6 +56,7 @@ function App() {
                 <Route path="/dang-ky" element={<Register/>} />
                 <Route path="/dang-nhap" element={<Login/>} />
                 <Route path="/gioi-thieu" element={<Introduction/>} />
+                <Route path="/huong-dan" element={<InstructFee/>} />
                 <Route path="/danh-sach-lop" element={<ListClasses/>} />
                 <Route path="/danh-sach-lop-phu-hop" element={<ListSuitableClasses/>} />
                 <Route path="/chi-tiet-lop" element={<DetailClass/>} />

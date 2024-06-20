@@ -70,26 +70,12 @@ const LoginForm = () => {
     return (
         <Container className='mb-30'>
             <Row className="mt-5">
-                <Col md={6} className="mb-4" style={{textAlign: 'center', borderRight: '1px solid #00b050'}}>
-                    <div>
-                        <span style={{color: "#00b050", fontSize: "20px"}}><strong>{`Đăng nhập tài khoản ${role}`} </strong></span>
+                <Col  style={{padding: '0 200px', textAlign: "center"}}>
+                <div>
+                    <div className='mb-20'>
+                        <span style={{color: "#00b050", fontSize: "26px"}}><strong>{`Đăng nhập tài khoản ${role}`} </strong></span>
                     </div>
-                    <Button  className="w-80 button-css mt-20" style={{backgroundColor: "white", border: "1px solid #00b050"}} onClick={() => { /* Handle Google Sign Up */ }}>
-                        <img src={google} alt="google icon" width="28px" height="28px" className='mr-20'></img>
-                        <span style={{color: "#4E95D9", fontWeight: '700'}}>Đăng nhập tài khoản với Google</span>
-                    </Button>
-                    <div className='mt-10'>
-                        <span>
-                            {`Bạn chưa có tài khoản, `}
-                            <strong style={{textDecoration: "underline", cursor: "pointer"}}
-                                onClick={() => setActorState(roleData, '/dang-ky')}
-                            >
-                                Đăng ký
-                            </strong>
-                        </span>
-                    </div>
-                </Col>
-                <Col md={6} style={{padding: '0 40px', textAlign: "center"}}>
+                        
                     <Form onSubmit={login}>
 
                         <FloatingLabel
@@ -122,20 +108,30 @@ const LoginForm = () => {
                             />
                         </FloatingLabel>
 
-                        <div style={{display: "flex", justifyContent: "space-between"}}>
+                        <div style={{textAlign: 'center'}}>
                             <Button className='button-css' type="submit"
                                 // onClick={() => setActorState(loginSuccess, loginSuccessHref)}
                             >
                                 <strong>Đăng nhập</strong>
                             </Button>
-                            <div>
+                            {/* <div>
                                 <span>Quên mật khẩu?</span>
-                            </div>
+                            </div> */}
                         </div>
                         
 
                     </Form>
-
+                    <div className='mt-10'>
+                        <span>
+                            {`Bạn chưa có tài khoản, `}
+                            <strong style={{textDecoration: "underline", cursor: "pointer"}}
+                                onClick={() => setActorState(roleData, '/dang-ky')}
+                            >
+                                Đăng ký
+                            </strong>
+                        </span>
+                    </div>
+                </div>
                     {/* <div className='mt-10'>
                         <span style={{fontSize: "14px"}}>Bằng cách tạo tài khoản, bạn đồng ý với <a href='/'>Điều khoản sử dụng</a></span>
                     </div> */}

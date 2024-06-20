@@ -128,10 +128,8 @@ const AMBasicInfo = () => {
     return (
         <div>
             <Row>
-                        <Col xs={5} style={{paddingRight: "60px"}}>
-                            <div className="mb-20">
-                                <span className="span-css-blue-16 mb-20" style={{fontSize: "18px", fontWeight: '700'}}>Thông tin cơ bản</span>
-                            </div>
+                        {/* <Col xs={5} style={{paddingRight: "60px"}}>
+                           
                             <Form onSubmit={handleSubmit}>
                                 <Form.Group controlId="profilePicture">
                                     <Form.Label>Ảnh hồ sơ</Form.Label>
@@ -169,8 +167,11 @@ const AMBasicInfo = () => {
                                     )}
                                 </Form.Group>
                             </Form>
-                        </Col>
-                        <Col xs={7} className="mt-30" style={{paddingLeft: "30px"}}>
+                        </Col> */}
+                        <Col  className="mt-30" style={{paddingLeft: "30px"}}>
+                            <div className="mb-20">
+                                <span className="span-css-blue-16 mb-20" style={{fontSize: "18px", fontWeight: '700'}}>Thông tin cơ bản</span>
+                            </div>
                             <Form onSubmit={handleSubmit} className="mt-30">
                                 <FloatingLabel controlId="fullName" label="Họ và tên" className="mb-3">
                                     <Form.Control 

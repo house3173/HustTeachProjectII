@@ -6,11 +6,12 @@ import { useContext } from 'react'
 import { ActorContext } from '../../contexts/actorContext'
 import { useNavigate } from 'react-router-dom'
 
-const Introduce = () => {
+const Introduce = ({roleData}) => {
     const navigate = useNavigate()
 
     const {actorState, dispatch} = useContext(ActorContext)
-    const currentRoleActor = JSON.parse(localStorage.getItem('actorState'));
+    let currentRoleActor = JSON.parse(localStorage.getItem('actorState'));
+    if(roleData === 'mainHome') currentRoleActor = 'mainHome'
 
     const setActorState = (roleData, navi) => {
         dispatch({type: "RESET_ACTOR", payload : roleData})

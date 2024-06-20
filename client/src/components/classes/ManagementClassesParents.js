@@ -39,8 +39,8 @@ const ManagementClassesParents = (parentsId) => {
         setControlChild(!controlChild)
     } 
     
-    const handleShowEvalute = (newValue) => {
-        setShowEvalute(newValue);
+    const handleShowEvalute = () => {
+        setShowEvalute(!showEvalute);
     };
     
     const handleChangeEvalute = (e) => {
@@ -53,13 +53,14 @@ const ManagementClassesParents = (parentsId) => {
     
     const handleSubmitEvalute = async (e) => {
         e.preventDefault();
+        console.log('update evalute')
         try {
             const selectedItemClass = listClass.find(itemClass => itemClass.classId === itemClassId);
 
             const evaluteDataForm = {
                 "tutorId": selectedItemClass.tutorId,
                 "classId": itemClassId,
-                "parentsId": parentsId,
+                "parentsId": parentsId.parentsId,
                 ...evaluteTutor
             }
 

@@ -21,7 +21,19 @@ const AdminManageStaffTable = () => {
                 const staffListWithClassCount = await Promise.all(
                     staffList.map(async (staff) => {
                         const classResponse = await axios.get(`${apiUrl}/classes/getAllByStaff/${staff.staffId}`);
-                        return { ...staff, classCount: classResponse.data.staffClasses.length };
+                        const classes = classResponse.data.staffClasses;
+
+                        const ongoingClasses = classes.filter(cls => cls.classStatus === 'Đang dạy').length;
+                        const finishedClasses = classes.filter(cls => cls.classStatus === 'Kết thúc').length;
+                        const otherClasses = classes.length - ongoingClasses - finishedClasses
+
+                        return { 
+                            ...staff, 
+                            classCount: classes.length,
+                            ongoingClasses,
+                            finishedClasses,
+                            otherClasses
+                        };
                     })
                 );
                 setListStaff(staffListWithClassCount);
@@ -67,6 +79,9 @@ const AdminManageStaffTable = () => {
                                 <th>Mã nhân viên</th>
                                 <th>Tên nhân viên</th>
                                 <th>Số lượng lớp quản lý</th>
+                                <th>Số lượng lớp đang diễn ra</th>
+                                <th>Số lượng lớp đã kết thúc</th>
+                                <th>Số lượng lớp đang tìm gia sư</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -75,6 +90,9 @@ const AdminManageStaffTable = () => {
                                     <td>{staff.staffId}</td>
                                     <td>{staff.staffName}</td>
                                     <td>{staff.classCount}</td>
+                                    <td>{staff.ongoingClasses}</td>
+                                    <td>{staff.finishedClasses}</td>
+                                    <td>{staff.otherClasses}</td>
                                 </tr>
                             ))}
                         </tbody>
